@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ISACzytac - Rejestracja</title>
+    <link rel="stylesheet" href="/css/style.css">
+  </head>
+  <body>
+    <div class="uklad">
+      <aside class="panel-nawigacji">
+        <a class="logo" href="/">ISACzytac</a>
+        <nav class="nawigacja-glowna">
+          <a href="/" data-sciezka="/">Główna</a>
+          <a href="/ksiazki" data-sciezka="/ksiazki">Książki</a>
+          <a href="/rejestracja" data-sciezka="/rejestracja">Rejestracja</a>
+          <a href="/o-projekcie" data-sciezka="/o-projekcie">O projekcie</a>
+        </nav>
+      </aside>
+
+      <main class="kolumna-glowna">
+        <header class="naglowek-strony">
+          <h1>Rejestracja</h1>
+          <p>Utwórz konto, aby dodawać książki i komentarze.</p>
+        </header>
+
+        <section class="karta">
+          <form class="formularz" id="formularz-rejestracji">
+            <label class="pole-formularza">
+              <span>Nazwa użytkownika</span>
+              <input type="text" name="nazwa" minlength="3" maxlength="30" required>
+            </label>
+
+            <label class="pole-formularza">
+              <span>Email</span>
+              <input type="email" name="email" required>
+            </label>
+
+            <label class="pole-formularza">
+              <span>Hasło</span>
+              <input type="password" name="haslo" minlength="6" required>
+            </label>
+
+            <button class="przycisk" type="submit">Utwórz konto</button>
+          </form>
+
+          <p class="tekst-pomocniczy odstep-gorny">
+            Masz już konto? <a class="link-akcent" href="/logowanie">Przejdź do logowania</a>.
+          </p>
+
+          <div class="komunikat" id="komunikat-rejestracji" aria-live="polite"></div>
+        </section>
+      </main>
+    </div>
+
+    <nav class="nawigacja-dolna">
+      <a href="/">Główna</a>
+      <a href="/ksiazki">Książki</a>
+      <a href="/rejestracja">Konto</a>
+    </nav>
+
+    <script src="/js/wspolne.js"></script>
+    <script src="/js/rejestracja.js"></script>
+  </body>
+</html>

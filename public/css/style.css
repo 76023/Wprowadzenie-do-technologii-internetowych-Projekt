@@ -168,6 +168,65 @@ a {
   background: var(--kolor-akcentu-ciemny);
 }
 
+.formularz {
+  display: grid;
+  gap: 16px;
+}
+
+.pole-formularza {
+  display: grid;
+  gap: 6px;
+  font-weight: 700;
+}
+
+.pole-formularza input,
+.pole-formularza textarea,
+.pole-formularza select {
+  width: 100%;
+  min-height: 42px;
+  padding: 9px 11px;
+  border: 1px solid var(--kolor-ramki);
+  border-radius: 6px;
+  background: #ffffff;
+  color: var(--kolor-tekstu);
+  font: inherit;
+}
+
+.pole-formularza textarea {
+  min-height: 130px;
+  resize: vertical;
+}
+
+.pole-formularza input:focus,
+.pole-formularza textarea:focus,
+.pole-formularza select:focus {
+  border-color: var(--kolor-akcentu);
+  outline: 2px solid #d8efff;
+}
+
+.odstep-gorny {
+  margin-top: 16px;
+}
+
+.link-akcent {
+  color: var(--kolor-akcentu-ciemny);
+  font-weight: 700;
+}
+
+.komunikat {
+  min-height: 24px;
+  margin-top: 16px;
+  color: var(--kolor-drugoplanowy);
+}
+
+.komunikat-sukces {
+  color: #0f7b34;
+}
+
+.komunikat-blad {
+  color: #b3261e;
+}
+
 .nawigacja-dolna {
   display: none;
 }

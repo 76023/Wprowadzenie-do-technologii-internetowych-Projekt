@@ -2,6 +2,7 @@ const path = require("path");
 const express = require("express");
 const { sciezkaBazy, wlaczBaze } = require("./baza");
 const { inicjalizujSchemat } = require("./schemat");
+const trasyAuth = require("./trasy/auth");
 const trasyKategorii = require("./trasy/kategorie");
 const trasyKsiazek = require("./trasy/ksiazki");
 
@@ -23,6 +24,7 @@ function wyslijStrone(nazwaPliku) {
 app.get("/", wyslijStrone("index.html"));
 app.get("/ksiazki", wyslijStrone("ksiazki.html"));
 app.get("/ksiazka", wyslijStrone("ksiazka.html"));
+app.get("/rejestracja", wyslijStrone("rejestracja.html"));
 app.get("/o-projekcie", wyslijStrone("o-projekcie.html"));
 
 app.get("/api/status", (req, res) => {
@@ -33,6 +35,7 @@ app.get("/api/status", (req, res) => {
   });
 });
 
+app.use("/api/auth", trasyAuth);
 app.use("/api/kategorie", trasyKategorii);
 app.use("/api/ksiazki", trasyKsiazek);
 
