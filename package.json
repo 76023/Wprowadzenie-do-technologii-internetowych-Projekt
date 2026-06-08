@@ -18,9 +18,11 @@
   "license": "MIT",
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "connect-pg-simple": "^10.0.0",
     "connect-sqlite3": "^0.9.16",
     "express": "^5.1.0",
     "express-session": "^1.18.1",
+    "pg": "^8.21.0",
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
