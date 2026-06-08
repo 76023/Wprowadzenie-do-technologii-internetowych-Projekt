@@ -126,13 +126,15 @@ router.get("/", async (req, res) => {
         ksiazki.data_dodania,
         kategorie.nazwa AS kategoria,
         uzytkownicy.nazwa AS nazwa_uzytkownika,
-        COUNT(komentarze.id) AS liczba_komentarzy
+        (
+          SELECT COUNT(*)
+          FROM komentarze
+          WHERE komentarze.id_ksiazki = ksiazki.id
+        ) AS liczba_komentarzy
       FROM ksiazki
       JOIN kategorie ON kategorie.id = ksiazki.id_kategorii
       JOIN uzytkownicy ON uzytkownicy.id = ksiazki.id_uzytkownika
-      LEFT JOIN komentarze ON komentarze.id_ksiazki = ksiazki.id
       ${gdzie}
-      GROUP BY ksiazki.id
       ORDER BY ksiazki.data_dodania DESC
     `, parametry);
 
