@@ -8,6 +8,10 @@ function pokazKomunikatLogowania(tresc, typ = "info") {
 
 formularzLogowania.addEventListener("submit", async (event) => {
   event.preventDefault();
+  if (!sprawdzFormularz(formularzLogowania)) {
+    return;
+  }
+
   pokazKomunikatLogowania("Sprawdzanie danych...");
 
   const daneFormularza = new FormData(formularzLogowania);

@@ -9,6 +9,15 @@ function pokazKomunikatEdycji(tresc, typ = "info") {
   komunikatEdycji.className = `komunikat komunikat-${typ}`;
 }
 
+function pokazBrakDostepuEdycji() {
+  formularzEdycji.remove();
+  komunikatEdycji.className = "stan-akcji";
+  komunikatEdycji.innerHTML = `
+    <p>Musisz się zalogować, aby wykonać tę akcję.</p>
+    <a class="przycisk" href="/logowanie">Logowanie</a>
+  `;
+}
+
 async function pobierzJson(adres) {
   const odpowiedz = await fetch(adres);
   const dane = await odpowiedz.json();
@@ -35,8 +44,7 @@ async function zaladujDaneEdycji() {
     ]);
 
     if (!daneSesji.uzytkownik) {
-      pokazKomunikatEdycji("Musisz być zalogowany, aby edytować książkę.", "blad");
-      formularzEdycji.hidden = true;
+      pokazBrakDostepuEdycji();
       return;
     }
 
@@ -68,6 +76,10 @@ async function zaladujDaneEdycji() {
 
 formularzEdycji.addEventListener("submit", async (event) => {
   event.preventDefault();
+  if (!sprawdzFormularz(formularzEdycji)) {
+    return;
+  }
+
   pokazKomunikatEdycji("Zapisywanie zmian...");
 
   const daneFormularza = new FormData(formularzEdycji);

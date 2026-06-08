@@ -15,8 +15,8 @@
           <a href="/ksiazki" data-sciezka="/ksiazki">Książki</a>
           <a href="/dodaj-ksiazke" data-sciezka="/dodaj-ksiazke">Dodaj książkę</a>
           <a href="/moje-ksiazki" data-sciezka="/moje-ksiazki">Moje książki</a>
-          <a href="/logowanie" data-sciezka="/logowanie">Logowanie</a>
-          <a href="/rejestracja" data-sciezka="/rejestracja">Rejestracja</a>
+          <a href="/logowanie" data-sciezka="/logowanie" data-tylko-gosc>Logowanie</a>
+          <a href="/rejestracja" data-sciezka="/rejestracja" data-tylko-gosc>Rejestracja</a>
           <a href="/o-projekcie" data-sciezka="/o-projekcie">O projekcie</a>
         </nav>
         <div class="panel-uzytkownika" data-panel-uzytkownika></div>
@@ -30,32 +30,32 @@
 
         <section class="karta">
           <form class="formularz" id="formularz-ksiazki">
-            <label class="pole-formularza">
-              <span>Tytuł</span>
-              <input type="text" name="tytul" minlength="2" maxlength="120" required>
-            </label>
+            <div class="pole-formularza">
+              <label for="pole-tytulu">Tytuł</label>
+              <input type="text" name="tytul" id="pole-tytulu" minlength="2" maxlength="120" required>
+            </div>
 
-            <label class="pole-formularza">
-              <span>Autor</span>
-              <input type="text" name="autor" minlength="2" maxlength="120" required>
-            </label>
+            <div class="pole-formularza">
+              <label for="pole-autora">Autor</label>
+              <input type="text" name="autor" id="pole-autora" minlength="2" maxlength="120" required>
+            </div>
 
-            <label class="pole-formularza">
-              <span>Kategoria</span>
+            <div class="pole-formularza">
+              <label for="pole-kategorii">Kategoria</label>
               <select name="id_kategorii" id="pole-kategorii" required>
                 <option value="">Ładowanie kategorii...</option>
               </select>
-            </label>
+            </div>
 
-            <label class="pole-formularza">
-              <span>Ocena książki</span>
-              <input type="number" name="ocena" min="1" max="5" step="0.5" value="4" required>
-            </label>
+            <div class="pole-formularza">
+              <label for="pole-oceny">Ocena książki</label>
+              <input type="number" name="ocena" id="pole-oceny" min="1" max="5" step="0.5" value="4" required>
+            </div>
 
-            <label class="pole-formularza">
-              <span>Opis</span>
-              <textarea name="opis" minlength="20" maxlength="2000" required></textarea>
-            </label>
+            <div class="pole-formularza">
+              <label for="pole-opisu">Opis</label>
+              <textarea name="opis" id="pole-opisu" minlength="20" maxlength="2000" required></textarea>
+            </div>
 
             <button class="przycisk" type="submit">Dodaj książkę</button>
           </form>
@@ -69,7 +69,7 @@
       <a href="/">Główna</a>
       <a href="/ksiazki">Książki</a>
       <a href="/dodaj-ksiazke">Dodaj</a>
-      <a href="/logowanie">Konto</a>
+      <a href="/logowanie" data-konto-mobilne>Konto</a>
     </nav>
 
     <script src="/js/wspolne.js"></script>

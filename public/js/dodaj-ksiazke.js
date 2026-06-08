@@ -7,6 +7,15 @@ function pokazKomunikatKsiazki(tresc, typ = "info") {
   komunikatKsiazki.className = `komunikat komunikat-${typ}`;
 }
 
+function pokazBrakDostepuDodawania() {
+  formularzKsiazki.remove();
+  komunikatKsiazki.className = "stan-akcji";
+  komunikatKsiazki.innerHTML = `
+    <p>Musisz się zalogować, aby wykonać tę akcję.</p>
+    <a class="przycisk" href="/logowanie">Logowanie</a>
+  `;
+}
+
 async function zaladujKategorie() {
   try {
     const odpowiedz = await fetch("/api/kategorie");
@@ -35,12 +44,7 @@ async function sprawdzDostepDodawania() {
     const dane = await odpowiedz.json();
 
     if (!dane.uzytkownik) {
-      formularzKsiazki.hidden = true;
-      pokazKomunikatKsiazki("Musisz być zalogowany, aby dodać książkę.", "blad");
-      komunikatKsiazki.insertAdjacentHTML(
-        "afterend",
-        '<a class="przycisk" href="/logowanie">Zaloguj się</a>'
-      );
+      pokazBrakDostepuDodawania();
       return false;
     }
 
@@ -52,6 +56,10 @@ async function sprawdzDostepDodawania() {
 
 formularzKsiazki.addEventListener("submit", async (event) => {
   event.preventDefault();
+  if (!sprawdzFormularz(formularzKsiazki)) {
+    return;
+  }
+
   pokazKomunikatKsiazki("Zapisywanie książki...");
 
   const daneFormularza = new FormData(formularzKsiazki);

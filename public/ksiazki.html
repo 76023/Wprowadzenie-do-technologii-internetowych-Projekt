@@ -15,8 +15,8 @@
           <a href="/ksiazki" data-sciezka="/ksiazki">Książki</a>
           <a href="/dodaj-ksiazke" data-sciezka="/dodaj-ksiazke">Dodaj książkę</a>
           <a href="/moje-ksiazki" data-sciezka="/moje-ksiazki">Moje książki</a>
-          <a href="/logowanie" data-sciezka="/logowanie">Logowanie</a>
-          <a href="/rejestracja" data-sciezka="/rejestracja">Rejestracja</a>
+          <a href="/logowanie" data-sciezka="/logowanie" data-tylko-gosc>Logowanie</a>
+          <a href="/rejestracja" data-sciezka="/rejestracja" data-tylko-gosc>Rejestracja</a>
           <a href="/o-projekcie" data-sciezka="/o-projekcie">O projekcie</a>
         </nav>
         <div class="panel-uzytkownika" data-panel-uzytkownika></div>
@@ -30,17 +30,17 @@
 
         <section class="karta">
           <form class="formularz-filtry" id="formularz-filtrow">
-            <label class="pole-formularza">
-              <span>Szukaj po tytule lub autorze</span>
+            <div class="pole-formularza">
+              <label for="pole-szukaj">Szukaj po tytule lub autorze</label>
               <input type="search" name="szukaj" id="pole-szukaj" placeholder="np. Lem albo Lalka">
-            </label>
+            </div>
 
-            <label class="pole-formularza">
-              <span>Kategoria</span>
+            <div class="pole-formularza">
+              <label for="filtr-kategorii">Kategoria</label>
               <select name="kategoria" id="filtr-kategorii">
                 <option value="">Wszystkie kategorie</option>
               </select>
-            </label>
+            </div>
 
             <div class="akcje-karty">
               <button class="przycisk" type="submit">Szukaj</button>
@@ -61,7 +61,7 @@
       <a href="/">Główna</a>
       <a href="/ksiazki">Książki</a>
       <a href="/dodaj-ksiazke">Dodaj</a>
-      <a href="/logowanie">Konto</a>
+      <a href="/logowanie" data-konto-mobilne>Konto</a>
     </nav>
 
     <script src="/js/wspolne.js"></script>

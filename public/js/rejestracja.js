@@ -8,6 +8,10 @@ function pokazKomunikatRejestracji(tresc, typ = "info") {
 
 formularzRejestracji.addEventListener("submit", async (event) => {
   event.preventDefault();
+  if (!sprawdzFormularz(formularzRejestracji)) {
+    return;
+  }
+
   pokazKomunikatRejestracji("Tworzenie konta...");
 
   const daneFormularza = new FormData(formularzRejestracji);

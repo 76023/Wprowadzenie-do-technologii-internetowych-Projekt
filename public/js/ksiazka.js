@@ -77,6 +77,7 @@ function pokazKsiazke(ksiazka, uzytkownik) {
 
   const formularzKomentarza = document.querySelector("#formularz-komentarza");
   if (formularzKomentarza) {
+    ustawWalidacjeFormularza(formularzKomentarza);
     formularzKomentarza.addEventListener("submit", dodajKomentarz);
   }
 }
@@ -115,21 +116,21 @@ function zbudujFormularzKomentarza(uzytkownik) {
   return `
     <h2>Dodaj komentarz</h2>
     <form class="formularz" id="formularz-komentarza">
-      <label class="pole-formularza">
-        <span>Ocena</span>
-        <select name="ocena" required>
+      <div class="pole-formularza">
+        <label for="pole-oceny-komentarza">Ocena</label>
+        <select name="ocena" id="pole-oceny-komentarza" required>
           <option value="5">5 - bardzo dobra</option>
           <option value="4">4 - dobra</option>
           <option value="3">3 - średnia</option>
           <option value="2">2 - słaba</option>
           <option value="1">1 - bardzo słaba</option>
         </select>
-      </label>
+      </div>
 
-      <label class="pole-formularza">
-        <span>Treść komentarza</span>
-        <textarea name="tresc" minlength="3" maxlength="1000" required></textarea>
-      </label>
+      <div class="pole-formularza">
+        <label for="pole-tresci-komentarza">Treść komentarza</label>
+        <textarea name="tresc" id="pole-tresci-komentarza" minlength="3" maxlength="1000" required></textarea>
+      </div>
 
       <button class="przycisk" type="submit">Dodaj komentarz</button>
     </form>
@@ -184,6 +185,10 @@ async function pobierzKomentarze() {
 async function dodajKomentarz(event) {
   event.preventDefault();
   const formularz = event.currentTarget;
+  if (!sprawdzFormularz(formularz)) {
+    return;
+  }
+
   const komunikat = document.querySelector("#komunikat-komentarza");
   komunikat.textContent = "Dodawanie komentarza...";
 
@@ -227,7 +232,12 @@ async function usunKomentarz(idKomentarza) {
       throw new Error(dane.komunikat || "Nie udało się usunąć komentarza.");
     }
 
-    pobierzKomentarze();
+    await pobierzKomentarze();
+    const komunikat = document.querySelector("#komunikat-komentarza");
+    if (komunikat) {
+      komunikat.textContent = "Komentarz został usunięty.";
+      komunikat.className = "komunikat komunikat-sukces";
+    }
   } catch (blad) {
     window.alert(blad.message);
   }
