@@ -29,6 +29,27 @@ async function zaladujKategorie() {
   }
 }
 
+async function sprawdzDostepDodawania() {
+  try {
+    const odpowiedz = await fetch("/api/auth/sesja");
+    const dane = await odpowiedz.json();
+
+    if (!dane.uzytkownik) {
+      formularzKsiazki.hidden = true;
+      pokazKomunikatKsiazki("Musisz być zalogowany, aby dodać książkę.", "blad");
+      komunikatKsiazki.insertAdjacentHTML(
+        "afterend",
+        '<a class="przycisk" href="/logowanie">Zaloguj się</a>'
+      );
+      return false;
+    }
+
+    return true;
+  } catch (blad) {
+    return true;
+  }
+}
+
 formularzKsiazki.addEventListener("submit", async (event) => {
   event.preventDefault();
   pokazKomunikatKsiazki("Zapisywanie książki...");
@@ -55,4 +76,8 @@ formularzKsiazki.addEventListener("submit", async (event) => {
   }
 });
 
-zaladujKategorie();
+sprawdzDostepDodawania().then((maDostep) => {
+  if (maDostep) {
+    zaladujKategorie();
+  }
+});

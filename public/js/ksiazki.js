@@ -23,7 +23,7 @@ function skrocTekst(tekst, limit = 180) {
 function pokazKomunikat(tresc) {
   listaKsiazek.innerHTML = `
     <section class="karta">
-      <p class="tekst-pomocniczy">${tresc}</p>
+      <p class="tekst-pomocniczy">${ucieknijHtml(tresc)}</p>
     </section>
   `;
 }
@@ -35,16 +35,16 @@ function zbudujKarteKsiazki(ksiazka) {
   return `
     <article class="karta karta-ksiazki">
       <div class="meta-wiersz">
-        <span>${ksiazka.kategoria}</span>
+        <span>${ucieknijHtml(ksiazka.kategoria)}</span>
         <span>Dodano ${formatujDate(ksiazka.data_dodania)}</span>
       </div>
-      <h2><a href="/ksiazka?id=${ksiazka.id}">${ksiazka.tytul}</a></h2>
-      <p class="autor">Autor: ${ksiazka.autor}</p>
-      <p>${skrocTekst(ksiazka.opis)}</p>
+      <h2><a href="/ksiazka?id=${ksiazka.id}">${ucieknijHtml(ksiazka.tytul)}</a></h2>
+      <p class="autor">Autor: ${ucieknijHtml(ksiazka.autor)}</p>
+      <p>${ucieknijHtml(skrocTekst(ksiazka.opis))}</p>
       <div class="meta-wiersz">
         <span>Ocena: ${Number(ksiazka.ocena).toFixed(1)}/5</span>
         <span>${podpisKomentarzy}</span>
-        <span>Dodał: ${ksiazka.nazwa_uzytkownika}</span>
+        <span>Dodał: ${ucieknijHtml(ksiazka.nazwa_uzytkownika)}</span>
       </div>
     </article>
   `;

@@ -28,10 +28,17 @@ async function zaladujDaneEdycji() {
   }
 
   try {
-    const [daneKategorii, daneKsiazki] = await Promise.all([
+    const [daneSesji, daneKategorii, daneKsiazki] = await Promise.all([
+      pobierzJson("/api/auth/sesja"),
       pobierzJson("/api/kategorie"),
       pobierzJson(`/api/ksiazki/${idEdytowanejKsiazki}`)
     ]);
+
+    if (!daneSesji.uzytkownik) {
+      pokazKomunikatEdycji("Musisz być zalogowany, aby edytować książkę.", "blad");
+      formularzEdycji.hidden = true;
+      return;
+    }
 
     poleKategoriiEdycji.innerHTML = '<option value="">Wybierz kategorię</option>';
     daneKategorii.kategorie.forEach((kategoria) => {
@@ -42,6 +49,12 @@ async function zaladujDaneEdycji() {
     });
 
     const ksiazka = daneKsiazki.ksiazka;
+    if (daneSesji.uzytkownik.id !== ksiazka.id_uzytkownika) {
+      pokazKomunikatEdycji("Możesz edytować tylko własne książki.", "blad");
+      formularzEdycji.hidden = true;
+      return;
+    }
+
     formularzEdycji.tytul.value = ksiazka.tytul;
     formularzEdycji.autor.value = ksiazka.autor;
     formularzEdycji.id_kategorii.value = ksiazka.id_kategorii;

@@ -16,7 +16,7 @@ function formatujDateSzczegolow(data) {
 function pokazBladSzczegolow(tresc) {
   szczegolyKsiazki.innerHTML = `
     <section class="karta">
-      <p class="tekst-pomocniczy">${tresc}</p>
+      <p class="tekst-pomocniczy">${ucieknijHtml(tresc)}</p>
       <a class="przycisk" href="/ksiazki">Wróć do listy</a>
     </section>
   `;
@@ -47,15 +47,15 @@ function pokazKsiazke(ksiazka, uzytkownik) {
   szczegolyKsiazki.innerHTML = `
     <article class="karta karta-szczegolow">
       <div class="meta-wiersz">
-        <span>${ksiazka.kategoria}</span>
+        <span>${ucieknijHtml(ksiazka.kategoria)}</span>
         <span>Dodano ${formatujDateSzczegolow(ksiazka.data_dodania)}</span>
       </div>
-      <h2>${ksiazka.tytul}</h2>
-      <p class="autor">Autor: ${ksiazka.autor}</p>
-      <p>${ksiazka.opis}</p>
+      <h2>${ucieknijHtml(ksiazka.tytul)}</h2>
+      <p class="autor">Autor: ${ucieknijHtml(ksiazka.autor)}</p>
+      <p>${ucieknijHtml(ksiazka.opis)}</p>
       <div class="meta-wiersz">
         <span>Ocena książki: ${Number(ksiazka.ocena).toFixed(1)}/5</span>
-        <span>Dodał: ${ksiazka.nazwa_uzytkownika}</span>
+        <span>Dodał: ${ucieknijHtml(ksiazka.nazwa_uzytkownika)}</span>
       </div>
       ${akcjeAutora}
     </article>
@@ -146,11 +146,11 @@ function zbudujKomentarz(komentarz) {
   return `
     <article class="komentarz">
       <div class="meta-wiersz">
-        <span>${komentarz.nazwa_uzytkownika}</span>
+        <span>${ucieknijHtml(komentarz.nazwa_uzytkownika)}</span>
         <span>${formatujDateSzczegolow(komentarz.data_dodania)}</span>
         <span>Ocena: ${komentarz.ocena}/5</span>
       </div>
-      <p>${komentarz.tresc}</p>
+      <p>${ucieknijHtml(komentarz.tresc)}</p>
       ${przyciskUsuwania}
     </article>
   `;
@@ -177,7 +177,7 @@ async function pobierzKomentarze() {
       przycisk.addEventListener("click", () => usunKomentarz(przycisk.dataset.usunKomentarz));
     });
   } catch (blad) {
-    listaKomentarzy.innerHTML = `<p class="tekst-pomocniczy">${blad.message}</p>`;
+    listaKomentarzy.innerHTML = `<p class="tekst-pomocniczy">${ucieknijHtml(blad.message)}</p>`;
   }
 }
 

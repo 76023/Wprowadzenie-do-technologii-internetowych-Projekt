@@ -29,8 +29,30 @@
         </header>
 
         <section class="karta">
-          <h2>Założenia</h2>
-          <p>Projekt używa HTML, CSS, JavaScript, Node.js, Express oraz SQLite.</p>
+          <h2>Cel aplikacji</h2>
+          <p>
+            Aplikacja pozwala prowadzić prostą listę książek, dodawać własne pozycje,
+            komentować je i filtrować katalog według tytułu, autora oraz kategorii.
+          </p>
+        </section>
+
+        <section class="karta">
+          <h2>Technologie</h2>
+          <ul class="lista-prosta">
+            <li>Frontend: HTML, CSS i JavaScript bez dodatkowego frameworka.</li>
+            <li>Backend: Node.js oraz Express.</li>
+            <li>Baza danych: SQLite z tabelami użytkowników, książek, kategorii i komentarzy.</li>
+            <li>Logowanie: sesje serwerowe oraz hasła zapisane jako hash bcrypt.</li>
+          </ul>
+        </section>
+
+        <section class="karta">
+          <h2>Zakres projektu</h2>
+          <p>
+            Projekt został przygotowany jako kompletna, ale nadal prosta aplikacja semestralna.
+            Kod celowo nie używa rozbudowanej architektury, żeby łatwo było wyjaśnić działanie
+            tras Express, zapytań SQL i komunikacji frontendu z API.
+          </p>
         </section>
       </main>
     </div>
@@ -39,6 +61,7 @@
       <a href="/">Główna</a>
       <a href="/ksiazki">Książki</a>
       <a href="/dodaj-ksiazke">Dodaj</a>
+      <a href="/logowanie">Konto</a>
     </nav>
 
     <script src="/js/wspolne.js"></script>

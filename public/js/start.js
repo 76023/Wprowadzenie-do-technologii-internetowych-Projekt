@@ -1,7 +1,7 @@
 const ostatnieKsiazki = document.querySelector("#ostatnie-ksiazki");
 
 function pokazStartowyKomunikat(tresc) {
-  ostatnieKsiazki.innerHTML = `<p class="tekst-pomocniczy">${tresc}</p>`;
+  ostatnieKsiazki.innerHTML = `<p class="tekst-pomocniczy">${ucieknijHtml(tresc)}</p>`;
 }
 
 async function pokazOstatnieKsiazki() {
@@ -25,8 +25,8 @@ async function pokazOstatnieKsiazki() {
       .map(
         (ksiazka) => `
           <a class="wiersz-link" href="/ksiazka?id=${ksiazka.id}">
-            <strong>${ksiazka.tytul}</strong>
-            <span>${ksiazka.autor}</span>
+            <strong>${ucieknijHtml(ksiazka.tytul)}</strong>
+            <span>${ucieknijHtml(ksiazka.autor)}</span>
           </a>
         `
       )
