@@ -102,11 +102,17 @@ async function dodajUzytkownikaStartowego() {
 
 async function dodajKsiazkeStartowa(ksiazka, idUzytkownika) {
   const istnieje = await pobierz(
-    "SELECT id FROM ksiazki WHERE tytul = ? AND autor = ?",
+    "SELECT id, okladka_url FROM ksiazki WHERE tytul = ? AND autor = ?",
     [ksiazka.tytul, ksiazka.autor]
   );
 
   if (istnieje) {
+    if (ksiazka.okladka_url && !istnieje.okladka_url) {
+      await uruchom(
+        "UPDATE ksiazki SET okladka_url = ? WHERE id = ?",
+        [ksiazka.okladka_url, istnieje.id]
+      );
+    }
     return istnieje.id;
   }
 
@@ -157,32 +163,162 @@ async function dodajDaneStartowe() {
       autor: "Stanisław Lem",
       kategoria: "Fantastyka",
       ocena: 5,
+      okladka_url: "https://covers.openlibrary.org/b/isbn/9780156027601-L.jpg",
       opis:
-        "Klasyczna powieść science fiction o kontakcie z obcą inteligencją i granicach ludzkiego poznania."
+        "Klasyczna powieść science fiction o kontakcie z obcą inteligencją i granicach ludzkiego poznania. Stacja badawcza nad obcą planetą staje się sceną filozoficznego dramatu o pamięci i tęsknocie."
     },
     {
       tytul: "Lalka",
       autor: "Bolesław Prus",
       kategoria: "Powieść",
       ocena: 5,
+      okladka_url: "https://covers.openlibrary.org/b/isbn/8307032334-L.jpg",
       opis:
-        "Powieść o społeczeństwie, ambicji, uczuciach i Warszawie drugiej połowy XIX wieku."
+        "Powieść o społeczeństwie, ambicji, uczuciach i Warszawie drugiej połowy XIX wieku. Historia Stanisława Wokulskiego to portret epoki i niespełnionej miłości na tle przemian społecznych."
     },
     {
       tytul: "Cesarz",
       autor: "Ryszard Kapuściński",
       kategoria: "Reportaż",
       ocena: 4,
+      okladka_url: "https://covers.openlibrary.org/b/isbn/9788324004485-L.jpg",
       opis:
-        "Reportaż literacki pokazujący mechanizmy władzy na przykładzie dworu Hajle Sellasje."
+        "Reportaż literacki pokazujący mechanizmy władzy na przykładzie dworu Hajle Sellasje. Książka, w której Etiopia jest tylko pretekstem do uniwersalnej opowieści o autorytaryzmie."
     },
     {
       tytul: "Krótka historia czasu",
       autor: "Stephen Hawking",
       kategoria: "Nauka",
       ocena: 4,
+      okladka_url: "https://covers.openlibrary.org/b/isbn/9780553380163-L.jpg",
       opis:
-        "Popularnonaukowe wprowadzenie do pytań o kosmos, czas, czarne dziury i początek wszechświata."
+        "Popularnonaukowe wprowadzenie do pytań o kosmos, czas, czarne dziury i początek wszechświata. Klasyka, która tłumaczy współczesną fizykę bez wzorów, ale bez upraszczania."
+    },
+    {
+      tytul: "Pan Tadeusz",
+      autor: "Adam Mickiewicz",
+      kategoria: "Powieść",
+      ocena: 4.5,
+      okladka_url: "https://covers.openlibrary.org/b/isbn/9788373273726-L.jpg",
+      opis:
+        "Epopeja narodowa o szlachcie polskiej, sporze o zamek i ostatnim zajeździe na Litwie. Język, obrazowanie i humor sprawiają, że ta lektura wciąż żyje poza szkolnym kanonem."
+    },
+    {
+      tytul: "Chłopi",
+      autor: "Władysław Reymont",
+      kategoria: "Powieść",
+      ocena: 4,
+      okladka_url: "https://covers.openlibrary.org/b/isbn/9788373273139-L.jpg",
+      opis:
+        "Czterotomowa powieść o życiu wsi Lipce w rytmie pór roku. Reymont dał polskiej literaturze epopeję chłopską, za którą otrzymał literackiego Nobla."
+    },
+    {
+      tytul: "Sto lat samotności",
+      autor: "Gabriel García Márquez",
+      kategoria: "Powieść",
+      ocena: 5,
+      okladka_url: "https://covers.openlibrary.org/b/isbn/9780060883287-L.jpg",
+      opis:
+        "Saga rodziny Buendía z fikcyjnego miasteczka Macondo. Najbardziej znana powieść realizmu magicznego, w której historia, mit i pamięć łączą się w jeden organizm."
+    },
+    {
+      tytul: "Mistrz i Małgorzata",
+      autor: "Michaił Bułhakow",
+      kategoria: "Powieść",
+      ocena: 5,
+      okladka_url: "https://covers.openlibrary.org/b/isbn/9780141187761-L.jpg",
+      opis:
+        "Diabeł odwiedza stalinowską Moskwę, a w tle toczy się opowieść o Mistrzu, jego ukochanej i Poncjuszu Piłacie. Powieść o odwadze, miłości i władzy."
+    },
+    {
+      tytul: "Cyberiada",
+      autor: "Stanisław Lem",
+      kategoria: "Fantastyka",
+      ocena: 4.5,
+      okladka_url: "https://covers.openlibrary.org/b/isbn/9788308039434-L.jpg",
+      opis:
+        "Cykl groteskowych opowiadań o konstruktorach Trurlu i Klapaucjuszu, którzy poruszają się po wszechświecie pełnym maszyn, królów i absurdu. Lem jako satyryk i filozof."
+    },
+    {
+      tytul: "Ostatnie życzenie",
+      autor: "Andrzej Sapkowski",
+      kategoria: "Fantastyka",
+      ocena: 4.5,
+      okladka_url: "https://covers.openlibrary.org/b/isbn/9788375780635-L.jpg",
+      opis:
+        "Zbiór opowiadań otwierający sagę o wiedźminie Geralcie z Rivii. Dżinn, strzyga, mała syrenka i pojedynek na słowa zamiast mieczy - tu zaczyna się polska fantastyka."
+    },
+    {
+      tytul: "Diuna",
+      autor: "Frank Herbert",
+      kategoria: "Fantastyka",
+      ocena: 5,
+      okladka_url: "https://covers.openlibrary.org/b/isbn/9780441172719-L.jpg",
+      opis:
+        "Polityka, religia i ekologia na pustynnej planecie Arrakis. Saga rodu Atrydów wyznaczyła standard współczesnej science fiction i wciąż jest wzorem worldbuildingu."
+    },
+    {
+      tytul: "Władca Pierścieni: Drużyna Pierścienia",
+      autor: "J.R.R. Tolkien",
+      kategoria: "Fantastyka",
+      ocena: 5,
+      okladka_url: "https://covers.openlibrary.org/b/isbn/9780261103573-L.jpg",
+      opis:
+        "Pierwsza część epickiej trylogii o wędrówce ku Mordorowi. Drużyna z Rivendell rusza w drogę, by zniszczyć Pierścień, który zagraża całemu Śródziemiu."
+    },
+    {
+      tytul: "Heban",
+      autor: "Ryszard Kapuściński",
+      kategoria: "Reportaż",
+      ocena: 5,
+      okladka_url: "https://covers.openlibrary.org/b/isbn/9780679402107-L.jpg",
+      opis:
+        "Zbiór reportaży z Afryki pisanych przez lata jako korespondent. Kapuściński nie pisze o Afryce jako bloku, tylko o setkach lokalnych spraw, ludzi i dróg."
+    },
+    {
+      tytul: "Gottland",
+      autor: "Mariusz Szczygieł",
+      kategoria: "Reportaż",
+      ocena: 4.5,
+      okladka_url: "https://covers.openlibrary.org/b/isbn/9788375364095-L.jpg",
+      opis:
+        "Reportaże o czeskiej duszy XX wieku - pomniku Stalina, Bacie, Lidze i ucieczkach. Książka, która zmieniła sposób, w jaki Polacy patrzą na sąsiada zza Tatr."
+    },
+    {
+      tytul: "Sapiens. Od zwierząt do bogów",
+      autor: "Yuval Noah Harari",
+      kategoria: "Nauka",
+      ocena: 4,
+      okladka_url: "https://covers.openlibrary.org/b/isbn/9780062316097-L.jpg",
+      opis:
+        "Historia gatunku Homo sapiens od sawanny po XXI wiek. Książka popularnonaukowa, która wywołała ogromną debatę o tym, co naprawdę zrobiło z nas to, kim jesteśmy."
+    },
+    {
+      tytul: "Egoistyczny gen",
+      autor: "Richard Dawkins",
+      kategoria: "Nauka",
+      ocena: 4.5,
+      okladka_url: "https://covers.openlibrary.org/b/isbn/9780192860927-L.jpg",
+      opis:
+        "Klasyka biologii ewolucyjnej, w której bohaterem doboru naturalnego okazuje się nie osobnik ani gatunek, lecz gen. Książka, która przedefiniowała sposób mówienia o ewolucji."
+    },
+    {
+      tytul: "Uwikłanie",
+      autor: "Zygmunt Miłoszewski",
+      kategoria: "Kryminał",
+      ocena: 4,
+      okladka_url: "https://covers.openlibrary.org/b/isbn/9788376480398-L.jpg",
+      opis:
+        "Prokurator Teodor Szacki bada sprawę z elementami terapii ustawień rodzinnych. Polski kryminał, który wciąga i pokazuje Warszawę z innej strony."
+    },
+    {
+      tytul: "Imię róży",
+      autor: "Umberto Eco",
+      kategoria: "Kryminał",
+      ocena: 5,
+      okladka_url: "https://covers.openlibrary.org/b/isbn/9780156001311-L.jpg",
+      opis:
+        "Średniowieczne opactwo, seria zagadkowych zgonów i biblioteka pełna sekretów. Eco łączy kryminał, traktat filozoficzny i literacką grę z czytelnikiem."
     }
   ];
 
@@ -191,19 +327,31 @@ async function dodajDaneStartowe() {
     idKsiazek.push(await dodajKsiazkeStartowa(ksiazka, idUzytkownika));
   }
 
-  await dodajKomentarzStartowy({
-    idUzytkownika,
-    idKsiazki: idKsiazek[0],
-    ocena: 5,
-    tresc: "Bardzo dobra książka do rozmowy o tym, czym jest poznanie."
-  });
+  const komentarze = [
+    { ksiazka: "Solaris", ocena: 5, tresc: "Bardzo dobra książka do rozmowy o tym, czym jest poznanie." },
+    { ksiazka: "Lalka", ocena: 5, tresc: "Długa, ale po czasie zostaje w pamięci." },
+    { ksiazka: "Sto lat samotności", ocena: 5, tresc: "Trzeba dać się ponieść. Pierwsze sto stron wciąga na resztę życia." },
+    { ksiazka: "Mistrz i Małgorzata", ocena: 5, tresc: "Po latach wraca się do niej z innym pytaniem za każdym razem." },
+    { ksiazka: "Ostatnie życzenie", ocena: 4, tresc: "Świetne wejście do sagi - opowiadania trzymają poziom." },
+    { ksiazka: "Diuna", ocena: 5, tresc: "Worldbuilding na najwyższym poziomie. Warto poznać oryginał." },
+    { ksiazka: "Heban", ocena: 5, tresc: "Każdy rozdział to osobna podróż. Reportaż w najlepszym wydaniu." },
+    { ksiazka: "Sapiens. Od zwierząt do bogów", ocena: 4, tresc: "Mocna synteza, ale warto czytać krytycznie." },
+    { ksiazka: "Uwikłanie", ocena: 4, tresc: "Polski kryminał, który nie udaje skandynawskiego - i o to chodzi." }
+  ];
 
-  await dodajKomentarzStartowy({
-    idUzytkownika,
-    idKsiazki: idKsiazek[1],
-    ocena: 5,
-    tresc: "Długa, ale po czasie zostaje w pamięci."
-  });
+  for (const komentarz of komentarze) {
+    const indeks = ksiazki.findIndex((pozycja) => pozycja.tytul === komentarz.ksiazka);
+    if (indeks === -1) {
+      continue;
+    }
+
+    await dodajKomentarzStartowy({
+      idUzytkownika,
+      idKsiazki: idKsiazek[indeks],
+      ocena: komentarz.ocena,
+      tresc: komentarz.tresc
+    });
+  }
 }
 
 async function inicjalizujSchemat() {
