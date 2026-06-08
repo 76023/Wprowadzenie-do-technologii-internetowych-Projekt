@@ -1,10 +1,18 @@
 const mojeKsiazki = document.querySelector("#moje-ksiazki");
 
-function pokazKomunikatMoichKsiazek(tresc, pokazLogowanie = false) {
+function pokazKomunikatMoichKsiazek(tresc, opcje = {}) {
+  const akcje = [];
+  if (opcje.pokazLogowanie) {
+    akcje.push('<a class="przycisk" href="/logowanie">Zaloguj się</a>');
+  }
+  if (opcje.pokazDodawanie) {
+    akcje.push('<a class="przycisk" href="/dodaj-ksiazke">Dodaj pierwszą książkę</a>');
+    akcje.push('<a class="przycisk-drugorzedny" href="/ksiazki">Przejdź do katalogu</a>');
+  }
   mojeKsiazki.innerHTML = `
     <section class="karta">
       <p class="tekst-pomocniczy">${ucieknijHtml(tresc)}</p>
-      ${pokazLogowanie ? '<a class="przycisk" href="/logowanie">Zaloguj się</a>' : ""}
+      ${akcje.length ? `<div class="akcje-karty">${akcje.join("")}</div>` : ""}
     </section>
   `;
 }
@@ -36,7 +44,7 @@ async function pobierzMojeKsiazki() {
     const dane = await odpowiedz.json();
 
     if (odpowiedz.status === 401) {
-      pokazKomunikatMoichKsiazek(dane.komunikat, true);
+      pokazKomunikatMoichKsiazek(dane.komunikat, { pokazLogowanie: true });
       return;
     }
 
@@ -45,7 +53,7 @@ async function pobierzMojeKsiazki() {
     }
 
     if (!dane.ksiazki.length) {
-      pokazKomunikatMoichKsiazek("Nie dodałeś jeszcze żadnych książek.");
+      pokazKomunikatMoichKsiazek("Twoja biblioteczka jest jeszcze pusta. Dodaj pierwszą książkę albo zajrzyj do katalogu, żeby zacząć.", { pokazDodawanie: true });
       return;
     }
 

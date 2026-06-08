@@ -25,36 +25,41 @@
       </header>
 
       <main class="kolumna-glowna">
-        <header class="naglowek-strony">
-          <h1>O projekcie</h1>
-          <p>ISACzytac powstaje w ramach przedmiotu Wprowadzenie do technologii internetowych.</p>
-        </header>
+        <section class="bohater-strony">
+          <h1>O projekcie ISACzytac</h1>
+          <p>Studencki portal książkowy powstał w ramach przedmiotu Wprowadzenie do technologii internetowych. Aplikacja ma pokazać, jak działa prawdziwa aplikacja webowa od formularza HTML aż po bazę danych.</p>
+        </section>
 
         <section class="karta">
           <h2>Cel aplikacji</h2>
-          <p>
-            Aplikacja pozwala prowadzić prostą listę książek, dodawać własne pozycje,
-            komentować je i filtrować katalog według tytułu, autora oraz kategorii.
-          </p>
+          <p>ISACzytac pozwala prowadzić prosty katalog książek, dodawać własne pozycje, oceniać je, publikować opinie czytelników i filtrować katalog według tytułu, autora oraz kategorii. Inspirowany duchem portali książkowych, takich jak LubimyCzytac, ale w wersji studenckiej.</p>
         </section>
 
         <section class="karta">
           <h2>Technologie</h2>
           <ul class="lista-prosta">
-            <li>Frontend: HTML, CSS i JavaScript bez dodatkowego frameworka.</li>
-            <li>Backend: Node.js oraz Express.</li>
-            <li>Baza danych: SQLite z tabelami użytkowników, książek, kategorii i komentarzy.</li>
-            <li>Logowanie: sesje serwerowe oraz hasła zapisane jako hash bcrypt.</li>
+            <li><strong>Frontend:</strong> HTML, CSS i JavaScript bez dodatkowego frameworka.</li>
+            <li><strong>Backend:</strong> Node.js oraz Express.</li>
+            <li><strong>Baza danych:</strong> SQLite z tabelami uzytkownicy, kategorie, ksiazki i komentarze.</li>
+            <li><strong>Logowanie:</strong> sesje serwerowe oraz hasła zapisane jako hash bcrypt.</li>
+            <li><strong>Okładki:</strong> pole okladka_url z zewnętrznym adresem obrazka i lokalny placeholder SVG jako rezerwa.</li>
+          </ul>
+        </section>
+
+        <section class="karta">
+          <h2>Co możesz zrobić</h2>
+          <ul class="lista-prosta">
+            <li>Przeglądać katalog z okładkami i ocenami w widoku siatki.</li>
+            <li>Wyszukiwać książki po tytule lub autorze oraz filtrować po kategorii.</li>
+            <li>Założyć konto, dodawać własne książki i edytować je.</li>
+            <li>Wystawiać oceny i publikować opinie pod każdą książką.</li>
+            <li>Zaglądać do widoku „Moja biblioteczka” z własnymi pozycjami.</li>
           </ul>
         </section>
 
         <section class="karta">
           <h2>Zakres projektu</h2>
-          <p>
-            Projekt został przygotowany jako kompletna, ale nadal prosta aplikacja semestralna.
-            Kod celowo nie używa rozbudowanej architektury, żeby łatwo było wyjaśnić działanie
-            tras Express, zapytań SQL i komunikacji frontendu z API.
-          </p>
+          <p>Kod celowo pozostaje prosty - bez frameworków frontendowych i bez rozbudowanej architektury - żeby łatwo było prześledzić działanie tras Express, zapytań SQL oraz komunikacji frontendu z API JSON. Każdy etap pracy jest osobnym commitem.</p>
         </section>
       </main>
 
