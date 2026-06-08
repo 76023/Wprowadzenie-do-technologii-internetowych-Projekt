@@ -133,7 +133,7 @@ router.get("/", async (req, res) => {
       LEFT JOIN komentarze ON komentarze.id_ksiazki = ksiazki.id
       ${gdzie}
       GROUP BY ksiazki.id
-      ORDER BY datetime(ksiazki.data_dodania) DESC
+      ORDER BY ksiazki.data_dodania DESC
     `, parametry);
 
     res.json({ ksiazki });
@@ -191,7 +191,7 @@ router.get("/moje", wymagajLogowania, async (req, res) => {
         FROM ksiazki
         JOIN kategorie ON kategorie.id = ksiazki.id_kategorii
         WHERE ksiazki.id_uzytkownika = ?
-        ORDER BY datetime(ksiazki.data_dodania) DESC
+        ORDER BY ksiazki.data_dodania DESC
       `,
       [req.session.uzytkownik.id]
     );
@@ -283,7 +283,7 @@ router.get("/:id/komentarze", async (req, res) => {
         FROM komentarze
         JOIN uzytkownicy ON uzytkownicy.id = komentarze.id_uzytkownika
         WHERE komentarze.id_ksiazki = ?
-        ORDER BY datetime(komentarze.data_dodania) DESC
+        ORDER BY komentarze.data_dodania DESC
       `,
       [req.params.id]
     );
