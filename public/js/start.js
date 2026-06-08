@@ -24,9 +24,13 @@ async function pokazOstatnieKsiazki() {
     ostatnieKsiazki.innerHTML = ksiazki
       .map(
         (ksiazka) => `
-          <a class="wiersz-link" href="/ksiazka?id=${ksiazka.id}">
-            <strong>${ucieknijHtml(ksiazka.tytul)}</strong>
-            <span>${ucieknijHtml(ksiazka.autor)}</span>
+          <a class="karta-okladka" href="/ksiazka?id=${ksiazka.id}">
+            ${htmlOkladki(ksiazka)}
+            <div class="karta-okladka-tekst">
+              <strong>${ucieknijHtml(ksiazka.tytul)}</strong>
+              <span>${ucieknijHtml(ksiazka.autor)}</span>
+              ${gwiazdkiOceny(ksiazka.ocena)}
+            </div>
           </a>
         `
       )

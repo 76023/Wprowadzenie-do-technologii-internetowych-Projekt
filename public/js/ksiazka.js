@@ -45,24 +45,30 @@ function pokazKsiazke(ksiazka, uzytkownik) {
     : "";
 
   szczegolyKsiazki.innerHTML = `
-    <article class="karta karta-szczegolow">
-      <div class="meta-wiersz">
-        <span>${ucieknijHtml(ksiazka.kategoria)}</span>
-        <span>Dodano ${formatujDateSzczegolow(ksiazka.data_dodania)}</span>
+    <article class="karta karta-szczegolow hero-ksiazka">
+      <div class="hero-okladka">
+        ${htmlOkladki(ksiazka, "okladka okladka-duza")}
       </div>
-      <h2>${ucieknijHtml(ksiazka.tytul)}</h2>
-      <p class="autor">Autor: ${ucieknijHtml(ksiazka.autor)}</p>
-      <p>${ucieknijHtml(ksiazka.opis)}</p>
-      <div class="meta-wiersz">
-        <span>Ocena książki: ${Number(ksiazka.ocena).toFixed(1)}/5</span>
-        <span>Dodał: ${ucieknijHtml(ksiazka.nazwa_uzytkownika)}</span>
+      <div class="hero-tekst">
+        <span class="etykieta-kategorii">${ucieknijHtml(ksiazka.kategoria)}</span>
+        <h2>${ucieknijHtml(ksiazka.tytul)}</h2>
+        <p class="autor">${ucieknijHtml(ksiazka.autor)}</p>
+        <div class="hero-ocena">
+          ${gwiazdkiOceny(ksiazka.ocena)}
+          <span class="ocena-liczbowa">${Number(ksiazka.ocena).toFixed(1)} / 5</span>
+        </div>
+        <p class="opis-ksiazki">${ucieknijHtml(ksiazka.opis)}</p>
+        <div class="meta-wiersz">
+          <span>Dodał: ${ucieknijHtml(ksiazka.nazwa_uzytkownika)}</span>
+          <span>${formatujDateSzczegolow(ksiazka.data_dodania)}</span>
+        </div>
+        ${akcjeAutora}
       </div>
-      ${akcjeAutora}
     </article>
     <section class="karta">
-      <h2>Komentarze</h2>
+      <h2>Opinie czytelników</h2>
       <div id="lista-komentarzy">
-        <p class="tekst-pomocniczy">Ładowanie komentarzy...</p>
+        <p class="tekst-pomocniczy">Ładowanie opinii...</p>
       </div>
     </section>
     <section class="karta" id="sekcja-komentarza">
@@ -107,14 +113,14 @@ async function usunKsiazke() {
 function zbudujFormularzKomentarza(uzytkownik) {
   if (!uzytkownik) {
     return `
-      <h2>Dodaj komentarz</h2>
-      <p class="tekst-pomocniczy">Komentować mogą tylko zalogowani użytkownicy.</p>
+      <h2>Dodaj opinię</h2>
+      <p class="tekst-pomocniczy">Opinie mogą dodawać tylko zalogowani czytelnicy.</p>
       <a class="przycisk" href="/logowanie">Zaloguj się</a>
     `;
   }
 
   return `
-    <h2>Dodaj komentarz</h2>
+    <h2>Dodaj opinię</h2>
     <form class="formularz" id="formularz-komentarza">
       <div class="pole-formularza">
         <label for="pole-oceny-komentarza">Ocena</label>
@@ -128,11 +134,11 @@ function zbudujFormularzKomentarza(uzytkownik) {
       </div>
 
       <div class="pole-formularza">
-        <label for="pole-tresci-komentarza">Treść komentarza</label>
+        <label for="pole-tresci-komentarza">Treść opinii</label>
         <textarea name="tresc" id="pole-tresci-komentarza" minlength="3" maxlength="1000" required></textarea>
       </div>
 
-      <button class="przycisk" type="submit">Dodaj komentarz</button>
+      <button class="przycisk" type="submit">Opublikuj opinię</button>
     </form>
     <div class="komunikat" id="komunikat-komentarza" aria-live="polite"></div>
   `;
@@ -146,11 +152,11 @@ function zbudujKomentarz(komentarz) {
 
   return `
     <article class="komentarz">
-      <div class="meta-wiersz">
-        <span>${ucieknijHtml(komentarz.nazwa_uzytkownika)}</span>
-        <span>${formatujDateSzczegolow(komentarz.data_dodania)}</span>
-        <span>Ocena: ${komentarz.ocena}/5</span>
+      <div class="komentarz-naglowek">
+        <strong>${ucieknijHtml(komentarz.nazwa_uzytkownika)}</strong>
+        ${gwiazdkiOceny(komentarz.ocena)}
       </div>
+      <p class="komentarz-data">${formatujDateSzczegolow(komentarz.data_dodania)}</p>
       <p>${ucieknijHtml(komentarz.tresc)}</p>
       ${przyciskUsuwania}
     </article>
@@ -169,7 +175,7 @@ async function pobierzKomentarze() {
     }
 
     if (!dane.komentarze.length) {
-      listaKomentarzy.innerHTML = '<p class="tekst-pomocniczy">Nie ma jeszcze komentarzy.</p>';
+      listaKomentarzy.innerHTML = '<p class="tekst-pomocniczy">Nie ma jeszcze opinii czytelników.</p>';
       return;
     }
 

@@ -30,23 +30,19 @@ function pokazKomunikat(tresc) {
 
 function zbudujKarteKsiazki(ksiazka) {
   const liczbaKomentarzy = Number(ksiazka.liczba_komentarzy);
-  const podpisKomentarzy = liczbaKomentarzy === 1 ? "1 komentarz" : `${liczbaKomentarzy} komentarze`;
+  const podpisKomentarzy = liczbaKomentarzy === 1 ? "1 opinia" : `${liczbaKomentarzy} opinii`;
 
   return `
-    <article class="karta karta-ksiazki">
-      <div class="meta-wiersz">
-        <span>${ucieknijHtml(ksiazka.kategoria)}</span>
-        <span>Dodano ${formatujDate(ksiazka.data_dodania)}</span>
+    <a class="karta-okladka karta-katalog" href="/ksiazka?id=${ksiazka.id}">
+      ${htmlOkladki(ksiazka)}
+      <div class="karta-okladka-tekst">
+        <span class="etykieta-kategorii">${ucieknijHtml(ksiazka.kategoria)}</span>
+        <strong>${ucieknijHtml(ksiazka.tytul)}</strong>
+        <span class="autor">${ucieknijHtml(ksiazka.autor)}</span>
+        ${gwiazdkiOceny(ksiazka.ocena)}
+        <span class="meta-podpis">${podpisKomentarzy} &middot; ${formatujDate(ksiazka.data_dodania)}</span>
       </div>
-      <h2><a href="/ksiazka?id=${ksiazka.id}">${ucieknijHtml(ksiazka.tytul)}</a></h2>
-      <p class="autor">Autor: ${ucieknijHtml(ksiazka.autor)}</p>
-      <p>${ucieknijHtml(skrocTekst(ksiazka.opis))}</p>
-      <div class="meta-wiersz">
-        <span>Ocena: ${Number(ksiazka.ocena).toFixed(1)}/5</span>
-        <span>${podpisKomentarzy}</span>
-        <span>Dodał: ${ucieknijHtml(ksiazka.nazwa_uzytkownika)}</span>
-      </div>
-    </article>
+    </a>
   `;
 }
 
@@ -79,7 +75,7 @@ async function pobierzKsiazki() {
       return;
     }
 
-    listaKsiazek.innerHTML = dane.ksiazki.map(zbudujKarteKsiazki).join("");
+    listaKsiazek.innerHTML = `<div class="siatka-okladek">${dane.ksiazki.map(zbudujKarteKsiazki).join("")}</div>`;
   } catch (blad) {
     pokazKomunikat(blad.message);
   }

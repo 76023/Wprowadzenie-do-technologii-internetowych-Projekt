@@ -25,6 +25,34 @@ function ucieknijHtml(wartosc) {
     .replaceAll("'", "&#039;");
 }
 
+const SCIEZKA_OKLADKI_ZASTEPCZEJ = "/img/brak-okladki.svg";
+
+function zrodloOkladki(ksiazka) {
+  const adres = ksiazka && ksiazka.okladka_url ? String(ksiazka.okladka_url) : "";
+  if (!adres) {
+    return SCIEZKA_OKLADKI_ZASTEPCZEJ;
+  }
+
+  if (!/^https?:\/\//i.test(adres)) {
+    return SCIEZKA_OKLADKI_ZASTEPCZEJ;
+  }
+
+  return adres;
+}
+
+function htmlOkladki(ksiazka, klasa = "okladka") {
+  const adres = zrodloOkladki(ksiazka);
+  const tytul = ksiazka && ksiazka.tytul ? `Okładka książki ${ksiazka.tytul}` : "Okładka książki";
+  return `<img class="${klasa}" src="${ucieknijHtml(adres)}" alt="${ucieknijHtml(tytul)}" loading="lazy" onerror="this.onerror=null;this.src='${SCIEZKA_OKLADKI_ZASTEPCZEJ}';">`;
+}
+
+function gwiazdkiOceny(ocena) {
+  const wartosc = Math.max(0, Math.min(5, Number(ocena) || 0));
+  const pelne = Math.round(wartosc);
+  const puste = 5 - pelne;
+  return `<span class="gwiazdki" aria-label="Ocena ${wartosc.toFixed(1)} na 5">${"★".repeat(pelne)}<span class="gwiazdki-puste">${"★".repeat(puste)}</span></span>`;
+}
+
 async function wylogujUzytkownika() {
   await fetch("/api/auth/wylogowanie", { method: "POST" });
   window.location.href = "/";

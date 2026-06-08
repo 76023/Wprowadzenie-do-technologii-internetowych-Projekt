@@ -379,6 +379,188 @@ a {
   display: none;
 }
 
+.okladka {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  background: var(--kolor-ramki-jasny);
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(60, 40, 20, 0.12);
+}
+
+.okladka-duza {
+  width: 220px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.siatka-okladek {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 22px;
+  padding: 22px;
+}
+
+.karta-okladka {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid var(--kolor-ramki);
+  border-radius: 10px;
+  background: var(--kolor-panelu);
+  color: var(--kolor-tekstu);
+  text-decoration: none;
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+
+.karta-okladka:hover {
+  transform: translateY(-3px);
+  border-color: var(--kolor-akcentu);
+  box-shadow: 0 10px 26px rgba(60, 40, 20, 0.14);
+}
+
+.karta-okladka-tekst {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.karta-okladka-tekst strong {
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+.karta-okladka-tekst .autor {
+  margin: 0;
+  color: var(--kolor-drugoplanowy);
+  font-size: 14px;
+}
+
+.karta-okladka-tekst .meta-podpis {
+  color: var(--kolor-drugoplanowy);
+  font-size: 12px;
+}
+
+.etykieta-kategorii {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: #eef5ff;
+  color: var(--kolor-akcentu-ciemny);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.gwiazdki {
+  display: inline-block;
+  color: #d6a516;
+  font-size: 15px;
+  letter-spacing: 1px;
+}
+
+.gwiazdki-puste {
+  color: rgba(0, 0, 0, 0.15);
+}
+
+.hero-ksiazka {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.hero-okladka {
+  display: flex;
+  justify-content: center;
+}
+
+.hero-tekst {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.hero-tekst h2 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+.hero-tekst .autor {
+  margin: 0;
+  color: var(--kolor-drugoplanowy);
+  font-size: 16px;
+}
+
+.hero-ocena {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ocena-liczbowa {
+  color: var(--kolor-drugoplanowy);
+  font-weight: 700;
+}
+
+.opis-ksiazki {
+  margin: 6px 0 0;
+  white-space: pre-line;
+}
+
+.karta-moja {
+  display: grid;
+  grid-template-columns: 140px minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.karta-moja-okladka {
+  display: block;
+}
+
+.karta-moja-tekst {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.karta-moja-tekst h2 {
+  margin: 0;
+}
+
+.opis-skrocony {
+  margin: 4px 0 0;
+  color: var(--kolor-drugoplanowy);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.podpowiedz-pola {
+  color: var(--kolor-drugoplanowy);
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.komentarz-naglowek {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.komentarz-data {
+  margin: 4px 0 6px;
+  color: var(--kolor-drugoplanowy);
+  font-size: 13px;
+}
+
 @media (max-width: 820px) {
   .uklad {
     display: block;
@@ -418,5 +600,24 @@ a {
     padding: 11px 6px;
     text-align: center;
     font-size: 14px;
+  }
+
+  .hero-ksiazka {
+    grid-template-columns: 1fr;
+  }
+
+  .okladka-duza {
+    width: 180px;
+  }
+
+  .karta-moja {
+    grid-template-columns: 110px minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .siatka-okladek {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px;
+    padding: 16px;
   }
 }
