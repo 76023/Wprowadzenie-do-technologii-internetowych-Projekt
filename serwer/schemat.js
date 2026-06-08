@@ -107,7 +107,11 @@ async function dodajKsiazkeStartowa(ksiazka, idUzytkownika) {
   );
 
   if (istnieje) {
-    if (ksiazka.okladka_url && !istnieje.okladka_url) {
+    const obecna = istnieje.okladka_url || "";
+    const czyPusta = !obecna;
+    const czyStaryUrlSeed = obecna.startsWith("https://covers.openlibrary.org/");
+
+    if (ksiazka.okladka_url && (czyPusta || czyStaryUrlSeed)) {
       await uruchom(
         "UPDATE ksiazki SET okladka_url = ? WHERE id = ?",
         [ksiazka.okladka_url, istnieje.id]
@@ -163,7 +167,7 @@ async function dodajDaneStartowe() {
       autor: "Stanisław Lem",
       kategoria: "Fantastyka",
       ocena: 5,
-      okladka_url: "https://covers.openlibrary.org/b/isbn/9780156027601-L.jpg",
+      okladka_url: "/img/okladki/solaris.svg",
       opis:
         "Klasyczna powieść science fiction o kontakcie z obcą inteligencją i granicach ludzkiego poznania. Stacja badawcza nad obcą planetą staje się sceną filozoficznego dramatu o pamięci i tęsknocie."
     },
@@ -172,7 +176,7 @@ async function dodajDaneStartowe() {
       autor: "Bolesław Prus",
       kategoria: "Powieść",
       ocena: 5,
-      okladka_url: "https://covers.openlibrary.org/b/isbn/8307032334-L.jpg",
+      okladka_url: "/img/okladki/lalka.svg",
       opis:
         "Powieść o społeczeństwie, ambicji, uczuciach i Warszawie drugiej połowy XIX wieku. Historia Stanisława Wokulskiego to portret epoki i niespełnionej miłości na tle przemian społecznych."
     },
@@ -181,7 +185,7 @@ async function dodajDaneStartowe() {
       autor: "Ryszard Kapuściński",
       kategoria: "Reportaż",
       ocena: 4,
-      okladka_url: "https://covers.openlibrary.org/b/isbn/9788324004485-L.jpg",
+      okladka_url: "/img/okladki/cesarz.svg",
       opis:
         "Reportaż literacki pokazujący mechanizmy władzy na przykładzie dworu Hajle Sellasje. Książka, w której Etiopia jest tylko pretekstem do uniwersalnej opowieści o autorytaryzmie."
     },
@@ -190,7 +194,7 @@ async function dodajDaneStartowe() {
       autor: "Stephen Hawking",
       kategoria: "Nauka",
       ocena: 4,
-      okladka_url: "https://covers.openlibrary.org/b/isbn/9780553380163-L.jpg",
+      okladka_url: "/img/okladki/krotka-historia-czasu.svg",
       opis:
         "Popularnonaukowe wprowadzenie do pytań o kosmos, czas, czarne dziury i początek wszechświata. Klasyka, która tłumaczy współczesną fizykę bez wzorów, ale bez upraszczania."
     },
@@ -199,7 +203,7 @@ async function dodajDaneStartowe() {
       autor: "Adam Mickiewicz",
       kategoria: "Powieść",
       ocena: 4.5,
-      okladka_url: "https://covers.openlibrary.org/b/isbn/9788373273726-L.jpg",
+      okladka_url: "/img/okladki/pan-tadeusz.svg",
       opis:
         "Epopeja narodowa o szlachcie polskiej, sporze o zamek i ostatnim zajeździe na Litwie. Język, obrazowanie i humor sprawiają, że ta lektura wciąż żyje poza szkolnym kanonem."
     },
@@ -208,7 +212,7 @@ async function dodajDaneStartowe() {
       autor: "Władysław Reymont",
       kategoria: "Powieść",
       ocena: 4,
-      okladka_url: "https://covers.openlibrary.org/b/isbn/9788373273139-L.jpg",
+      okladka_url: "/img/okladki/chlopi.svg",
       opis:
         "Czterotomowa powieść o życiu wsi Lipce w rytmie pór roku. Reymont dał polskiej literaturze epopeję chłopską, za którą otrzymał literackiego Nobla."
     },
@@ -217,7 +221,7 @@ async function dodajDaneStartowe() {
       autor: "Gabriel García Márquez",
       kategoria: "Powieść",
       ocena: 5,
-      okladka_url: "https://covers.openlibrary.org/b/isbn/9780060883287-L.jpg",
+      okladka_url: "/img/okladki/sto-lat-samotnosci.svg",
       opis:
         "Saga rodziny Buendía z fikcyjnego miasteczka Macondo. Najbardziej znana powieść realizmu magicznego, w której historia, mit i pamięć łączą się w jeden organizm."
     },
@@ -226,7 +230,7 @@ async function dodajDaneStartowe() {
       autor: "Michaił Bułhakow",
       kategoria: "Powieść",
       ocena: 5,
-      okladka_url: "https://covers.openlibrary.org/b/isbn/9780141187761-L.jpg",
+      okladka_url: "/img/okladki/mistrz-i-malgorzata.svg",
       opis:
         "Diabeł odwiedza stalinowską Moskwę, a w tle toczy się opowieść o Mistrzu, jego ukochanej i Poncjuszu Piłacie. Powieść o odwadze, miłości i władzy."
     },
@@ -235,7 +239,7 @@ async function dodajDaneStartowe() {
       autor: "Stanisław Lem",
       kategoria: "Fantastyka",
       ocena: 4.5,
-      okladka_url: "https://covers.openlibrary.org/b/isbn/9788308039434-L.jpg",
+      okladka_url: "/img/okladki/cyberiada.svg",
       opis:
         "Cykl groteskowych opowiadań o konstruktorach Trurlu i Klapaucjuszu, którzy poruszają się po wszechświecie pełnym maszyn, królów i absurdu. Lem jako satyryk i filozof."
     },
@@ -244,7 +248,7 @@ async function dodajDaneStartowe() {
       autor: "Andrzej Sapkowski",
       kategoria: "Fantastyka",
       ocena: 4.5,
-      okladka_url: "https://covers.openlibrary.org/b/isbn/9788375780635-L.jpg",
+      okladka_url: "/img/okladki/ostatnie-zyczenie.svg",
       opis:
         "Zbiór opowiadań otwierający sagę o wiedźminie Geralcie z Rivii. Dżinn, strzyga, mała syrenka i pojedynek na słowa zamiast mieczy - tu zaczyna się polska fantastyka."
     },
@@ -253,7 +257,7 @@ async function dodajDaneStartowe() {
       autor: "Frank Herbert",
       kategoria: "Fantastyka",
       ocena: 5,
-      okladka_url: "https://covers.openlibrary.org/b/isbn/9780441172719-L.jpg",
+      okladka_url: "/img/okladki/diuna.svg",
       opis:
         "Polityka, religia i ekologia na pustynnej planecie Arrakis. Saga rodu Atrydów wyznaczyła standard współczesnej science fiction i wciąż jest wzorem worldbuildingu."
     },
@@ -262,7 +266,7 @@ async function dodajDaneStartowe() {
       autor: "J.R.R. Tolkien",
       kategoria: "Fantastyka",
       ocena: 5,
-      okladka_url: "https://covers.openlibrary.org/b/isbn/9780261103573-L.jpg",
+      okladka_url: "/img/okladki/wladca-pierscieni.svg",
       opis:
         "Pierwsza część epickiej trylogii o wędrówce ku Mordorowi. Drużyna z Rivendell rusza w drogę, by zniszczyć Pierścień, który zagraża całemu Śródziemiu."
     },
@@ -271,7 +275,7 @@ async function dodajDaneStartowe() {
       autor: "Ryszard Kapuściński",
       kategoria: "Reportaż",
       ocena: 5,
-      okladka_url: "https://covers.openlibrary.org/b/isbn/9780679402107-L.jpg",
+      okladka_url: "/img/okladki/heban.svg",
       opis:
         "Zbiór reportaży z Afryki pisanych przez lata jako korespondent. Kapuściński nie pisze o Afryce jako bloku, tylko o setkach lokalnych spraw, ludzi i dróg."
     },
@@ -280,7 +284,7 @@ async function dodajDaneStartowe() {
       autor: "Mariusz Szczygieł",
       kategoria: "Reportaż",
       ocena: 4.5,
-      okladka_url: "https://covers.openlibrary.org/b/isbn/9788375364095-L.jpg",
+      okladka_url: "/img/okladki/gottland.svg",
       opis:
         "Reportaże o czeskiej duszy XX wieku - pomniku Stalina, Bacie, Lidze i ucieczkach. Książka, która zmieniła sposób, w jaki Polacy patrzą na sąsiada zza Tatr."
     },
@@ -289,7 +293,7 @@ async function dodajDaneStartowe() {
       autor: "Yuval Noah Harari",
       kategoria: "Nauka",
       ocena: 4,
-      okladka_url: "https://covers.openlibrary.org/b/isbn/9780062316097-L.jpg",
+      okladka_url: "/img/okladki/sapiens.svg",
       opis:
         "Historia gatunku Homo sapiens od sawanny po XXI wiek. Książka popularnonaukowa, która wywołała ogromną debatę o tym, co naprawdę zrobiło z nas to, kim jesteśmy."
     },
@@ -298,7 +302,7 @@ async function dodajDaneStartowe() {
       autor: "Richard Dawkins",
       kategoria: "Nauka",
       ocena: 4.5,
-      okladka_url: "https://covers.openlibrary.org/b/isbn/9780192860927-L.jpg",
+      okladka_url: "/img/okladki/egoistyczny-gen.svg",
       opis:
         "Klasyka biologii ewolucyjnej, w której bohaterem doboru naturalnego okazuje się nie osobnik ani gatunek, lecz gen. Książka, która przedefiniowała sposób mówienia o ewolucji."
     },
@@ -307,7 +311,7 @@ async function dodajDaneStartowe() {
       autor: "Zygmunt Miłoszewski",
       kategoria: "Kryminał",
       ocena: 4,
-      okladka_url: "https://covers.openlibrary.org/b/isbn/9788376480398-L.jpg",
+      okladka_url: "/img/okladki/uwiklanie.svg",
       opis:
         "Prokurator Teodor Szacki bada sprawę z elementami terapii ustawień rodzinnych. Polski kryminał, który wciąga i pokazuje Warszawę z innej strony."
     },
@@ -316,7 +320,7 @@ async function dodajDaneStartowe() {
       autor: "Umberto Eco",
       kategoria: "Kryminał",
       ocena: 5,
-      okladka_url: "https://covers.openlibrary.org/b/isbn/9780156001311-L.jpg",
+      okladka_url: "/img/okladki/imie-rozy.svg",
       opis:
         "Średniowieczne opactwo, seria zagadkowych zgonów i biblioteka pełna sekretów. Eco łączy kryminał, traktat filozoficzny i literacką grę z czytelnikiem."
     }

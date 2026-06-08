@@ -17,6 +17,13 @@ function sprawdzAdresOkladki(wartosc) {
     return null;
   }
 
+  if (wartosc.startsWith("/img/") && !wartosc.startsWith("//")) {
+    if (wartosc.includes("..") || wartosc.includes("\\")) {
+      return null;
+    }
+    return wartosc;
+  }
+
   try {
     const adres = new URL(wartosc);
     if (adres.protocol !== "http:" && adres.protocol !== "https:") {
@@ -59,7 +66,7 @@ function sprawdzKsiazke(dane) {
   }
 
   if (okladkaUrl === null) {
-    bledy.push("Adres okładki musi być poprawnym linkiem http lub https (do 500 znaków).");
+    bledy.push("Adres okładki musi być linkiem http lub https albo lokalną ścieżką /img/... (do 500 znaków).");
   }
 
   return { bledy, tytul, autor, opis, idKategorii, ocena, okladkaUrl: okladkaUrl || null };
