@@ -1,9 +1,8 @@
 const path = require("path");
 const fs = require("fs");
 const session = require("express-session");
-const sqliteStore = require("connect-sqlite3");
-
-const SQLiteStore = sqliteStore(session);
+const { TRYB } = require("./tryb-bazy");
+const { pobierzPuleSesji } = require("./baza");
 
 function pobierzKatalogSesji() {
   if (process.env.SESSION_DB_DIR) {
@@ -17,20 +16,35 @@ function pobierzKatalogSesji() {
   return path.join(__dirname, "..", "baza");
 }
 
-function konfigurujSesje(app) {
-  app.set("trust proxy", 1);
+function utworzMagazynSesji() {
+  if (TRYB === "postgresql") {
+    const PgSession = require("connect-pg-simple")(session);
+    return new PgSession({
+      pool: pobierzPuleSesji(),
+      tableName: "sesje",
+      createTableIfMissing: true
+    });
+  }
+
+  const SQLiteStore = require("connect-sqlite3")(session);
   const katalogSesji = pobierzKatalogSesji();
 
   if (!fs.existsSync(katalogSesji)) {
     fs.mkdirSync(katalogSesji, { recursive: true });
   }
 
+  return new SQLiteStore({
+    db: "sesje.sqlite",
+    dir: katalogSesji
+  });
+}
+
+function konfigurujSesje(app) {
+  app.set("trust proxy", 1);
+
   app.use(
     session({
-      store: new SQLiteStore({
-        db: "sesje.sqlite",
-        dir: katalogSesji
-      }),
+      store: utworzMagazynSesji(),
       name: "isaczytac.sid",
       secret: process.env.SESSION_SECRET || "lokalny-sekret-isaczytac",
       resave: false,
