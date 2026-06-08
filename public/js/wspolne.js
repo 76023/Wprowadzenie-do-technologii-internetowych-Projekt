@@ -33,11 +33,15 @@ function zrodloOkladki(ksiazka) {
     return SCIEZKA_OKLADKI_ZASTEPCZEJ;
   }
 
-  if (!/^https?:\/\//i.test(adres)) {
-    return SCIEZKA_OKLADKI_ZASTEPCZEJ;
+  if (/^https?:\/\//i.test(adres)) {
+    return adres;
   }
 
-  return adres;
+  if (adres.startsWith("/img/") && !adres.startsWith("//") && !adres.includes("..")) {
+    return adres;
+  }
+
+  return SCIEZKA_OKLADKI_ZASTEPCZEJ;
 }
 
 function htmlOkladki(ksiazka, klasa = "okladka") {
