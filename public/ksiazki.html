@@ -26,12 +26,12 @@
 
       <main class="kolumna-glowna">
         <header class="naglowek-strony">
-          <h1>Lista książek</h1>
-          <p>Książki dodane przez użytkowników aplikacji.</p>
+          <h1>Katalog książek</h1>
+          <p id="podtytul-katalogu">Przeglądaj wszystkie książki dodane przez czytelników.</p>
         </header>
 
-        <section class="karta">
-          <form class="formularz-filtry" id="formularz-filtrow">
+        <section class="karta karta-filtry">
+          <form class="formularz-filtry siatka-filtry" id="formularz-filtrow">
             <div class="pole-formularza">
               <label for="pole-szukaj">Szukaj po tytule lub autorze</label>
               <input type="search" name="szukaj" id="pole-szukaj" placeholder="np. Lem albo Lalka">
@@ -44,7 +44,7 @@
               </select>
             </div>
 
-            <div class="akcje-karty">
+            <div class="akcje-karty akcje-filtry">
               <button class="przycisk" type="submit">Szukaj</button>
               <a class="przycisk-drugorzedny" href="/ksiazki">Wyczyść</a>
             </div>

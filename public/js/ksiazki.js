@@ -46,6 +46,23 @@ function zbudujKarteKsiazki(ksiazka) {
   `;
 }
 
+function aktualizujPodtytul(liczba, szukaj, kategoriaTekst) {
+  const podtytul = document.querySelector("#podtytul-katalogu");
+  if (!podtytul) {
+    return;
+  }
+
+  const fragmenty = [];
+  fragmenty.push(`Znaleziono ${liczba} ${liczba === 1 ? "książkę" : "książek"}`);
+  if (szukaj) {
+    fragmenty.push(`dla zapytania "${szukaj}"`);
+  }
+  if (kategoriaTekst) {
+    fragmenty.push(`w kategorii ${kategoriaTekst}`);
+  }
+  podtytul.textContent = `${fragmenty.join(" ")}.`;
+}
+
 async function pobierzKsiazki() {
   pokazKomunikat("Ładowanie książek...");
 
@@ -69,6 +86,11 @@ async function pobierzKsiazki() {
     if (!odpowiedz.ok) {
       throw new Error(dane.komunikat || "Nieznany błąd.");
     }
+
+    const kategoriaTekst = kategoria
+      ? (filtrKategorii.querySelector(`option[value="${kategoria}"]`)?.textContent || "")
+      : "";
+    aktualizujPodtytul(dane.ksiazki.length, szukaj, kategoriaTekst);
 
     if (!dane.ksiazki.length) {
       pokazKomunikat("Nie znaleziono książek dla wybranych filtrów.");

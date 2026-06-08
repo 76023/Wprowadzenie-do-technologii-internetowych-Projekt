@@ -449,6 +449,21 @@ a {
   gap: 16px;
 }
 
+.siatka-filtry {
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) auto;
+  align-items: end;
+}
+
+.akcje-filtry {
+  margin: 0;
+}
+
+@media (max-width: 720px) {
+  .siatka-filtry {
+    grid-template-columns: 1fr;
+  }
+}
+
 .pole-formularza {
   display: grid;
   gap: 7px;
