@@ -1,7 +1,43 @@
 const express = require("express");
-const { pobierz, wszystkie } = require("../baza");
+const { pobierz, uruchom, wszystkie } = require("../baza");
+const { wymagajLogowania } = require("../sesja");
 
 const router = express.Router();
+
+function czyscTekst(wartosc) {
+  return String(wartosc || "").trim();
+}
+
+function sprawdzKsiazke(dane) {
+  const tytul = czyscTekst(dane.tytul);
+  const autor = czyscTekst(dane.autor);
+  const opis = czyscTekst(dane.opis);
+  const idKategorii = Number(dane.id_kategorii);
+  const ocena = Number(dane.ocena);
+  const bledy = [];
+
+  if (tytul.length < 2 || tytul.length > 120) {
+    bledy.push("Tytuł musi mieć od 2 do 120 znaków.");
+  }
+
+  if (autor.length < 2 || autor.length > 120) {
+    bledy.push("Autor musi mieć od 2 do 120 znaków.");
+  }
+
+  if (opis.length < 20 || opis.length > 2000) {
+    bledy.push("Opis musi mieć od 20 do 2000 znaków.");
+  }
+
+  if (!Number.isInteger(idKategorii) || idKategorii < 1) {
+    bledy.push("Wybierz kategorię.");
+  }
+
+  if (!Number.isFinite(ocena) || ocena < 1 || ocena > 5) {
+    bledy.push("Ocena musi być liczbą od 1 do 5.");
+  }
+
+  return { bledy, tytul, autor, opis, idKategorii, ocena };
+}
 
 router.get("/", async (req, res) => {
   try {
@@ -28,6 +64,38 @@ router.get("/", async (req, res) => {
   } catch (blad) {
     console.error("Blad pobierania ksiazek:", blad);
     res.status(500).json({ komunikat: "Nie udało się pobrać listy książek." });
+  }
+});
+
+router.post("/", wymagajLogowania, async (req, res) => {
+  try {
+    const { bledy, tytul, autor, opis, idKategorii, ocena } = sprawdzKsiazke(req.body);
+
+    if (bledy.length) {
+      res.status(400).json({ komunikat: bledy.join(" ") });
+      return;
+    }
+
+    const kategoria = await pobierz("SELECT id FROM kategorie WHERE id = ?", [idKategorii]);
+    if (!kategoria) {
+      res.status(400).json({ komunikat: "Wybrana kategoria nie istnieje." });
+      return;
+    }
+
+    const wynik = await uruchom(
+      `INSERT INTO ksiazki
+        (tytul, autor, opis, id_kategorii, ocena, id_uzytkownika)
+        VALUES (?, ?, ?, ?, ?, ?)`,
+      [tytul, autor, opis, idKategorii, ocena, req.session.uzytkownik.id]
+    );
+
+    res.status(201).json({
+      komunikat: "Książka została dodana.",
+      ksiazka: { id: wynik.id }
+    });
+  } catch (blad) {
+    console.error("Blad dodawania ksiazki:", blad);
+    res.status(500).json({ komunikat: "Nie udało się dodać książki." });
   }
 });
 

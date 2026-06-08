@@ -26,6 +26,7 @@ function wyslijStrone(nazwaPliku) {
 app.get("/", wyslijStrone("index.html"));
 app.get("/ksiazki", wyslijStrone("ksiazki.html"));
 app.get("/ksiazka", wyslijStrone("ksiazka.html"));
+app.get("/dodaj-ksiazke", wyslijStrone("dodaj-ksiazke.html"));
 app.get("/logowanie", wyslijStrone("logowanie.html"));
 app.get("/rejestracja", wyslijStrone("rejestracja.html"));
 app.get("/o-projekcie", wyslijStrone("o-projekcie.html"));

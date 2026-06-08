@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ISACzytac - Logowanie</title>
+    <title>ISACzytac - Dodaj książkę</title>
     <link rel="stylesheet" href="/css/style.css">
   </head>
   <body>
@@ -23,30 +23,43 @@
 
       <main class="kolumna-glowna">
         <header class="naglowek-strony">
-          <h1>Logowanie</h1>
-          <p>Zaloguj się, aby dodawać książki i komentować.</p>
+          <h1>Dodaj książkę</h1>
+          <p>Uzupełnij podstawowe informacje o książce.</p>
         </header>
 
         <section class="karta">
-          <form class="formularz" id="formularz-logowania">
+          <form class="formularz" id="formularz-ksiazki">
             <label class="pole-formularza">
-              <span>Email</span>
-              <input type="email" name="email" autocomplete="email" required>
+              <span>Tytuł</span>
+              <input type="text" name="tytul" minlength="2" maxlength="120" required>
             </label>
 
             <label class="pole-formularza">
-              <span>Hasło</span>
-              <input type="password" name="haslo" autocomplete="current-password" required>
+              <span>Autor</span>
+              <input type="text" name="autor" minlength="2" maxlength="120" required>
             </label>
 
-            <button class="przycisk" type="submit">Zaloguj</button>
+            <label class="pole-formularza">
+              <span>Kategoria</span>
+              <select name="id_kategorii" id="pole-kategorii" required>
+                <option value="">Ładowanie kategorii...</option>
+              </select>
+            </label>
+
+            <label class="pole-formularza">
+              <span>Ocena książki</span>
+              <input type="number" name="ocena" min="1" max="5" step="0.5" value="4" required>
+            </label>
+
+            <label class="pole-formularza">
+              <span>Opis</span>
+              <textarea name="opis" minlength="20" maxlength="2000" required></textarea>
+            </label>
+
+            <button class="przycisk" type="submit">Dodaj książkę</button>
           </form>
 
-          <p class="tekst-pomocniczy odstep-gorny">
-            Nie masz konta? <a class="link-akcent" href="/rejestracja">Przejdź do rejestracji</a>.
-          </p>
-
-          <div class="komunikat" id="komunikat-logowania" aria-live="polite"></div>
+          <div class="komunikat" id="komunikat-ksiazki" aria-live="polite"></div>
         </section>
       </main>
     </div>
@@ -58,6 +71,6 @@
     </nav>
 
     <script src="/js/wspolne.js"></script>
-    <script src="/js/logowanie.js"></script>
+    <script src="/js/dodaj-ksiazke.js"></script>
   </body>
 </html>
