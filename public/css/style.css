@@ -222,6 +222,19 @@ a {
   margin-top: 18px;
 }
 
+.komentarz {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--kolor-ramki);
+}
+
+.komentarz:last-child {
+  border-bottom: 0;
+}
+
+.komentarz p {
+  margin-bottom: 10px;
+}
+
 .formularz {
   display: grid;
   gap: 16px;

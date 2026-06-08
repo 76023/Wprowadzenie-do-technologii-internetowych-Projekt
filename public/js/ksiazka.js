@@ -1,6 +1,7 @@
 const szczegolyKsiazki = document.querySelector("#szczegoly-ksiazki");
 const parametry = new URLSearchParams(window.location.search);
 const idKsiazki = parametry.get("id");
+let aktualnyUzytkownik = null;
 
 function formatujDateSzczegolow(data) {
   return new Intl.DateTimeFormat("pl-PL", {
@@ -32,6 +33,7 @@ async function pobierzSesjeDlaSzczegolow() {
 }
 
 function pokazKsiazke(ksiazka, uzytkownik) {
+  aktualnyUzytkownik = uzytkownik;
   const czyAutor = uzytkownik && uzytkownik.id === ksiazka.id_uzytkownika;
   const akcjeAutora = czyAutor
     ? `
@@ -57,11 +59,25 @@ function pokazKsiazke(ksiazka, uzytkownik) {
       </div>
       ${akcjeAutora}
     </article>
+    <section class="karta">
+      <h2>Komentarze</h2>
+      <div id="lista-komentarzy">
+        <p class="tekst-pomocniczy">Ładowanie komentarzy...</p>
+      </div>
+    </section>
+    <section class="karta" id="sekcja-komentarza">
+      ${zbudujFormularzKomentarza(uzytkownik)}
+    </section>
   `;
 
   const przyciskUsuwania = document.querySelector("[data-usun-ksiazke]");
   if (przyciskUsuwania) {
     przyciskUsuwania.addEventListener("click", usunKsiazke);
+  }
+
+  const formularzKomentarza = document.querySelector("#formularz-komentarza");
+  if (formularzKomentarza) {
+    formularzKomentarza.addEventListener("submit", dodajKomentarz);
   }
 }
 
@@ -87,6 +103,136 @@ async function usunKsiazke() {
   }
 }
 
+function zbudujFormularzKomentarza(uzytkownik) {
+  if (!uzytkownik) {
+    return `
+      <h2>Dodaj komentarz</h2>
+      <p class="tekst-pomocniczy">Komentować mogą tylko zalogowani użytkownicy.</p>
+      <a class="przycisk" href="/logowanie">Zaloguj się</a>
+    `;
+  }
+
+  return `
+    <h2>Dodaj komentarz</h2>
+    <form class="formularz" id="formularz-komentarza">
+      <label class="pole-formularza">
+        <span>Ocena</span>
+        <select name="ocena" required>
+          <option value="5">5 - bardzo dobra</option>
+          <option value="4">4 - dobra</option>
+          <option value="3">3 - średnia</option>
+          <option value="2">2 - słaba</option>
+          <option value="1">1 - bardzo słaba</option>
+        </select>
+      </label>
+
+      <label class="pole-formularza">
+        <span>Treść komentarza</span>
+        <textarea name="tresc" minlength="3" maxlength="1000" required></textarea>
+      </label>
+
+      <button class="przycisk" type="submit">Dodaj komentarz</button>
+    </form>
+    <div class="komunikat" id="komunikat-komentarza" aria-live="polite"></div>
+  `;
+}
+
+function zbudujKomentarz(komentarz) {
+  const czyAutor = aktualnyUzytkownik && aktualnyUzytkownik.id === komentarz.id_uzytkownika;
+  const przyciskUsuwania = czyAutor
+    ? `<button class="przycisk-niebezpieczny" type="button" data-usun-komentarz="${komentarz.id}">Usuń</button>`
+    : "";
+
+  return `
+    <article class="komentarz">
+      <div class="meta-wiersz">
+        <span>${komentarz.nazwa_uzytkownika}</span>
+        <span>${formatujDateSzczegolow(komentarz.data_dodania)}</span>
+        <span>Ocena: ${komentarz.ocena}/5</span>
+      </div>
+      <p>${komentarz.tresc}</p>
+      ${przyciskUsuwania}
+    </article>
+  `;
+}
+
+async function pobierzKomentarze() {
+  const listaKomentarzy = document.querySelector("#lista-komentarzy");
+
+  try {
+    const odpowiedz = await fetch(`/api/ksiazki/${idKsiazki}/komentarze`);
+    const dane = await odpowiedz.json();
+
+    if (!odpowiedz.ok) {
+      throw new Error(dane.komunikat || "Nie udało się pobrać komentarzy.");
+    }
+
+    if (!dane.komentarze.length) {
+      listaKomentarzy.innerHTML = '<p class="tekst-pomocniczy">Nie ma jeszcze komentarzy.</p>';
+      return;
+    }
+
+    listaKomentarzy.innerHTML = dane.komentarze.map(zbudujKomentarz).join("");
+    listaKomentarzy.querySelectorAll("[data-usun-komentarz]").forEach((przycisk) => {
+      przycisk.addEventListener("click", () => usunKomentarz(przycisk.dataset.usunKomentarz));
+    });
+  } catch (blad) {
+    listaKomentarzy.innerHTML = `<p class="tekst-pomocniczy">${blad.message}</p>`;
+  }
+}
+
+async function dodajKomentarz(event) {
+  event.preventDefault();
+  const formularz = event.currentTarget;
+  const komunikat = document.querySelector("#komunikat-komentarza");
+  komunikat.textContent = "Dodawanie komentarza...";
+
+  const dane = Object.fromEntries(new FormData(formularz).entries());
+
+  try {
+    const odpowiedz = await fetch(`/api/ksiazki/${idKsiazki}/komentarze`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dane)
+    });
+    const wynik = await odpowiedz.json();
+
+    if (!odpowiedz.ok) {
+      throw new Error(wynik.komunikat || "Nie udało się dodać komentarza.");
+    }
+
+    formularz.reset();
+    komunikat.textContent = wynik.komunikat;
+    komunikat.className = "komunikat komunikat-sukces";
+    pobierzKomentarze();
+  } catch (blad) {
+    komunikat.textContent = blad.message;
+    komunikat.className = "komunikat komunikat-blad";
+  }
+}
+
+async function usunKomentarz(idKomentarza) {
+  const potwierdzenie = window.confirm("Czy na pewno chcesz usunąć ten komentarz?");
+  if (!potwierdzenie) {
+    return;
+  }
+
+  try {
+    const odpowiedz = await fetch(`/api/komentarze/${idKomentarza}`, {
+      method: "DELETE"
+    });
+    const dane = await odpowiedz.json();
+
+    if (!odpowiedz.ok) {
+      throw new Error(dane.komunikat || "Nie udało się usunąć komentarza.");
+    }
+
+    pobierzKomentarze();
+  } catch (blad) {
+    window.alert(blad.message);
+  }
+}
+
 async function pobierzSzczegolyKsiazki() {
   if (!idKsiazki) {
     pokazBladSzczegolow("Nie podano identyfikatora książki.");
@@ -103,6 +249,7 @@ async function pobierzSzczegolyKsiazki() {
 
     const uzytkownik = await pobierzSesjeDlaSzczegolow();
     pokazKsiazke(dane.ksiazka, uzytkownik);
+    pobierzKomentarze();
   } catch (blad) {
     pokazBladSzczegolow(blad.message);
   }

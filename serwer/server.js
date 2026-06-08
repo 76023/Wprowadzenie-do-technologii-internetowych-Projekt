@@ -5,6 +5,7 @@ const { inicjalizujSchemat } = require("./schemat");
 const { konfigurujSesje } = require("./sesja");
 const trasyAuth = require("./trasy/auth");
 const trasyKategorii = require("./trasy/kategorie");
+const trasyKomentarzy = require("./trasy/komentarze");
 const trasyKsiazek = require("./trasy/ksiazki");
 
 const app = express();
@@ -42,6 +43,7 @@ app.get("/api/status", (req, res) => {
 
 app.use("/api/auth", trasyAuth);
 app.use("/api/kategorie", trasyKategorii);
+app.use("/api/komentarze", trasyKomentarzy);
 app.use("/api/ksiazki", trasyKsiazek);
 
 app.use((req, res) => {

@@ -39,6 +39,22 @@ function sprawdzKsiazke(dane) {
   return { bledy, tytul, autor, opis, idKategorii, ocena };
 }
 
+function sprawdzKomentarz(dane) {
+  const tresc = czyscTekst(dane.tresc);
+  const ocena = Number(dane.ocena);
+  const bledy = [];
+
+  if (tresc.length < 3 || tresc.length > 1000) {
+    bledy.push("Komentarz musi mieć od 3 do 1000 znaków.");
+  }
+
+  if (!Number.isInteger(ocena) || ocena < 1 || ocena > 5) {
+    bledy.push("Ocena komentarza musi być liczbą od 1 do 5.");
+  }
+
+  return { bledy, tresc, ocena };
+}
+
 async function pobierzKsiazkePoId(id) {
   return pobierz("SELECT id, id_uzytkownika FROM ksiazki WHERE id = ?", [id]);
 }
@@ -164,6 +180,68 @@ router.delete("/:id", wymagajLogowania, async (req, res) => {
   } catch (blad) {
     console.error("Blad usuwania ksiazki:", blad);
     res.status(500).json({ komunikat: "Nie udało się usunąć książki." });
+  }
+});
+
+router.get("/:id/komentarze", async (req, res) => {
+  try {
+    const ksiazka = await pobierzKsiazkePoId(req.params.id);
+    if (!ksiazka) {
+      res.status(404).json({ komunikat: "Nie znaleziono książki." });
+      return;
+    }
+
+    const komentarze = await wszystkie(
+      `
+        SELECT
+          komentarze.id,
+          komentarze.tresc,
+          komentarze.ocena,
+          komentarze.data_dodania,
+          komentarze.id_uzytkownika,
+          uzytkownicy.nazwa AS nazwa_uzytkownika
+        FROM komentarze
+        JOIN uzytkownicy ON uzytkownicy.id = komentarze.id_uzytkownika
+        WHERE komentarze.id_ksiazki = ?
+        ORDER BY datetime(komentarze.data_dodania) DESC
+      `,
+      [req.params.id]
+    );
+
+    res.json({ komentarze });
+  } catch (blad) {
+    console.error("Blad pobierania komentarzy:", blad);
+    res.status(500).json({ komunikat: "Nie udało się pobrać komentarzy." });
+  }
+});
+
+router.post("/:id/komentarze", wymagajLogowania, async (req, res) => {
+  try {
+    const ksiazka = await pobierzKsiazkePoId(req.params.id);
+    if (!ksiazka) {
+      res.status(404).json({ komunikat: "Nie znaleziono książki." });
+      return;
+    }
+
+    const { bledy, tresc, ocena } = sprawdzKomentarz(req.body);
+    if (bledy.length) {
+      res.status(400).json({ komunikat: bledy.join(" ") });
+      return;
+    }
+
+    const wynik = await uruchom(
+      `INSERT INTO komentarze (tresc, ocena, id_uzytkownika, id_ksiazki)
+       VALUES (?, ?, ?, ?)`,
+      [tresc, ocena, req.session.uzytkownik.id, req.params.id]
+    );
+
+    res.status(201).json({
+      komunikat: "Komentarz został dodany.",
+      komentarz: { id: wynik.id }
+    });
+  } catch (blad) {
+    console.error("Blad dodawania komentarza:", blad);
+    res.status(500).json({ komunikat: "Nie udało się dodać komentarza." });
   }
 });
 
