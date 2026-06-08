@@ -240,6 +240,11 @@ a {
   gap: 16px;
 }
 
+.formularz-filtry {
+  display: grid;
+  gap: 14px;
+}
+
 .pole-formularza {
   display: grid;
   gap: 6px;

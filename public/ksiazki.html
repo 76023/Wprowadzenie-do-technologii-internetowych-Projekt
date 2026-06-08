@@ -27,6 +27,27 @@
           <p>Książki dodane przez użytkowników aplikacji.</p>
         </header>
 
+        <section class="karta">
+          <form class="formularz-filtry" id="formularz-filtrow">
+            <label class="pole-formularza">
+              <span>Szukaj po tytule lub autorze</span>
+              <input type="search" name="szukaj" id="pole-szukaj" placeholder="np. Lem albo Lalka">
+            </label>
+
+            <label class="pole-formularza">
+              <span>Kategoria</span>
+              <select name="kategoria" id="filtr-kategorii">
+                <option value="">Wszystkie kategorie</option>
+              </select>
+            </label>
+
+            <div class="akcje-karty">
+              <button class="przycisk" type="submit">Szukaj</button>
+              <a class="przycisk-drugorzedny" href="/ksiazki">Wyczyść</a>
+            </div>
+          </form>
+        </section>
+
         <div id="lista-ksiazek">
           <section class="karta">
             <p class="tekst-pomocniczy">Ładowanie książek...</p>

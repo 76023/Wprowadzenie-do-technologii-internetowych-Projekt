@@ -65,6 +65,23 @@ function czyWlasciciel(req, ksiazka) {
 
 router.get("/", async (req, res) => {
   try {
+    const szukaj = czyscTekst(req.query.szukaj);
+    const idKategorii = Number(req.query.kategoria);
+    const warunki = [];
+    const parametry = [];
+
+    if (szukaj) {
+      warunki.push("(ksiazki.tytul LIKE ? OR ksiazki.autor LIKE ?)");
+      parametry.push(`%${szukaj}%`, `%${szukaj}%`);
+    }
+
+    if (Number.isInteger(idKategorii) && idKategorii > 0) {
+      warunki.push("ksiazki.id_kategorii = ?");
+      parametry.push(idKategorii);
+    }
+
+    const gdzie = warunki.length ? `WHERE ${warunki.join(" AND ")}` : "";
+
     const ksiazki = await wszystkie(`
       SELECT
         ksiazki.id,
@@ -80,9 +97,10 @@ router.get("/", async (req, res) => {
       JOIN kategorie ON kategorie.id = ksiazki.id_kategorii
       JOIN uzytkownicy ON uzytkownicy.id = ksiazki.id_uzytkownika
       LEFT JOIN komentarze ON komentarze.id_ksiazki = ksiazki.id
+      ${gdzie}
       GROUP BY ksiazki.id
       ORDER BY datetime(ksiazki.data_dodania) DESC
-    `);
+    `, parametry);
 
     res.json({ ksiazki });
   } catch (blad) {
