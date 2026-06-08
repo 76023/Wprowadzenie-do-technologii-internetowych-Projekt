@@ -1,9 +1,9 @@
 const path = require("path");
 const express = require("express");
-const { sciezkaBazy, wlaczBaze } = require("./baza");
+const { wlaczBaze } = require("./baza");
 const { inicjalizujSchemat } = require("./schemat");
 const { konfigurujSesje } = require("./sesja");
-const { opisTrybu, czyTrybProdukcyjny } = require("./tryb-bazy");
+const { TRYB, opisTrybu, czyTrybProdukcyjny } = require("./tryb-bazy");
 const trasyAuth = require("./trasy/auth");
 const trasyKategorii = require("./trasy/kategorie");
 const trasyKomentarzy = require("./trasy/komentarze");
@@ -38,7 +38,8 @@ app.get("/o-projekcie", wyslijStrone("o-projekcie.html"));
 app.get("/api/status", (req, res) => {
   res.json({
     nazwa: "ISACzytac",
-    baza: sciezkaBazy,
+    baza: TRYB,
+    srodowisko: czyTrybProdukcyjny() ? "production" : "development",
     status: "dziala"
   });
 });
