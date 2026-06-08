@@ -1,17 +1,35 @@
 const path = require("path");
+const fs = require("fs");
 const session = require("express-session");
 const sqliteStore = require("connect-sqlite3");
 
 const SQLiteStore = sqliteStore(session);
 
+function pobierzKatalogSesji() {
+  if (process.env.SESSION_DB_DIR) {
+    return process.env.SESSION_DB_DIR;
+  }
+
+  if (process.env.DB_PATH) {
+    return path.dirname(process.env.DB_PATH);
+  }
+
+  return path.join(__dirname, "..", "baza");
+}
+
 function konfigurujSesje(app) {
   app.set("trust proxy", 1);
+  const katalogSesji = pobierzKatalogSesji();
+
+  if (!fs.existsSync(katalogSesji)) {
+    fs.mkdirSync(katalogSesji, { recursive: true });
+  }
 
   app.use(
     session({
       store: new SQLiteStore({
         db: "sesje.sqlite",
-        dir: path.join(__dirname, "..", "baza")
+        dir: katalogSesji
       }),
       name: "isaczytac.sid",
       secret: process.env.SESSION_SECRET || "lokalny-sekret-isaczytac",

@@ -4,9 +4,10 @@ const sqlite3 = require("sqlite3").verbose();
 
 const katalogBazy = path.join(__dirname, "..", "baza");
 const sciezkaBazy = process.env.DB_PATH || path.join(katalogBazy, "isaczytac.sqlite");
+const katalogDocelowyBazy = path.dirname(sciezkaBazy);
 
-if (!fs.existsSync(katalogBazy)) {
-  fs.mkdirSync(katalogBazy, { recursive: true });
+if (!fs.existsSync(katalogDocelowyBazy)) {
+  fs.mkdirSync(katalogDocelowyBazy, { recursive: true });
 }
 
 const baza = new sqlite3.Database(sciezkaBazy);

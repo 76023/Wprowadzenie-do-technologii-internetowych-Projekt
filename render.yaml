@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: isaczytac
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DB_PATH
+        value: /data/isaczytac.sqlite
+      - key: SESSION_SECRET
+        sync: false
+    disk:
+      name: isaczytac-dane
+      mountPath: /data
+      sizeGB: 1
