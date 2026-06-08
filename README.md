@@ -17,8 +17,8 @@ Celem projektu jest pokazanie działania kompletnej aplikacji webowej z frontend
 
 - Frontend: HTML, CSS, JavaScript
 - Backend: Node.js, Express
-- Baza danych: SQLite
-- Logowanie: express-session
+- Baza danych: SQLite lokalnie, PostgreSQL w produkcji (Render)
+- Logowanie: express-session (magazyn sesji w SQLite lokalnie, w PostgreSQL w produkcji)
 - Hashowanie haseł: bcrypt
 
 Projekt nie używa frameworka frontendowego. Strony HTML znajdują się w katalogu `public`, a JavaScript komunikuje się z backendem przez API JSON.
@@ -134,25 +134,50 @@ Niepoprawne wartości (`javascript:`, `data:`, ścieżki spoza `/img/`, traversa
 
 ## Zmienne środowiskowe
 
-Przykład znajduje się w pliku `.env.example`.
+Przykład znajduje się w pliku `.env.example`. Nie commituj prawdziwych sekretów.
 
-- `PORT` - port serwera, lokalnie domyślnie `3000`
-- `SESSION_SECRET` - sekret sesji
-- `DB_PATH` - ścieżka do pliku bazy SQLite
-- `SESSION_DB_DIR` - opcjonalny katalog pliku sesji SQLite
+- `PORT` - port serwera, lokalnie domyślnie `3000`.
+- `NODE_ENV` - `development` lokalnie, `production` na hostingu (włącza `secure` cookie sesji i SSL dla PostgreSQL).
+- `SESSION_SECRET` - sekret sesji. Na produkcji wartość musi być ustawiona w panelu hostingu.
+- `DB_PATH` - ścieżka do pliku SQLite, używana tylko gdy brak `DATABASE_URL`.
+- `SESSION_DB_DIR` - opcjonalny katalog pliku sesji SQLite.
+- `DATABASE_URL` - jeśli ustawione, aplikacja używa PostgreSQL zamiast SQLite. Tej wartości nie commitujemy do repozytorium - ustawiamy ją tylko w panelu Render.
 
-## Deployment
+## Wybór silnika bazy danych
 
-Projekt jest przygotowany do hostingu Node.js, np. Render albo Railway.
+Aplikacja sama wybiera silnik na podstawie zmiennej `DATABASE_URL`:
 
-Podstawowe ustawienia:
+- Brak `DATABASE_URL` - tryb lokalny, baza SQLite w katalogu `baza/`.
+- Ustawione `DATABASE_URL` - tryb produkcyjny, baza PostgreSQL.
 
-- build command: `npm install`
-- start command: `npm start`
-- wymagane zmienne: `SESSION_SECRET`
-- opcjonalnie: `DB_PATH`, jeśli baza SQLite ma być zapisana na trwałym dysku
+Po starcie serwer wypisuje, którego silnika używa:
 
-Dla Render dodano przykładowy plik `render.yaml`, który ustawia `DB_PATH=/data/isaczytac.sqlite` i używa dysku `/data` dla trwałych danych.
+```text
+Tryb bazy: SQLite | Srodowisko: lokalnie
+Tryb bazy: PostgreSQL | Srodowisko: produkcja
+```
+
+Endpoint `/api/status` zwraca pole `baza` o wartości `sqlite` lub `postgresql`, ale nigdy nie ujawnia `DATABASE_URL` ani ścieżki pliku.
+
+## Deployment na Render
+
+Projekt jest przygotowany do hostingu Node.js z trwałą bazą PostgreSQL.
+
+Krok po kroku:
+
+1. W panelu Render utwórz usługę **PostgreSQL** (Render Free wystarcza do projektu studenckiego).
+2. W panelu Render utwórz usługę **Web Service** podłączoną do tego repozytorium:
+   - `Build Command`: `npm install`
+   - `Start Command`: `npm start`
+3. W ustawieniach Web Service dodaj zmienne środowiskowe:
+   - `NODE_ENV=production`
+   - `SESSION_SECRET=<dlugi losowy ciag>`
+   - `DATABASE_URL=<wartosc z panelu Render PostgreSQL>` (Render pozwala podpiąć ją bezpośrednio z bazy).
+4. Render automatycznie zbuduje aplikację, a przy pierwszym uruchomieniu serwer utworzy w PostgreSQL tabele `uzytkownicy`, `kategorie`, `ksiazki`, `komentarze` oraz tabelę sesji `sesje`. Dane startowe (18 książek demo, kategorie i konto demo) zostaną wstawione idempotentnie.
+
+Dzięki PostgreSQL użytkownicy, książki, komentarze i sesje przeżywają restart i spin-down Render Free. SQLite na Render Free gubił dane po wybudzeniu kontenera, ponieważ system plików nie był trwały bez płatnego dysku.
+
+Plik `render.yaml` pozostawiamy w repozytorium jako wzorzec ustawień - w panelu Render konfiguracja środowiska może być wykonana ręcznie lub przez `render.yaml`.
 
 ## Jak działa aplikacja
 
