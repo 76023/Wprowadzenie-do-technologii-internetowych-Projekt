@@ -1,20 +1,24 @@
 const bcrypt = require("bcrypt");
 const { pobierz, uruchom, wszystkie } = require("./baza");
+const { TRYB } = require("./tryb-bazy");
+
+const KLUCZ_GLOWNY = TRYB === "postgresql" ? "SERIAL PRIMARY KEY" : "INTEGER PRIMARY KEY AUTOINCREMENT";
+const TYP_DATY = TRYB === "postgresql" ? "TIMESTAMP" : "TEXT";
 
 async function utworzTabele() {
   await uruchom(`
     CREATE TABLE IF NOT EXISTS uzytkownicy (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      id ${KLUCZ_GLOWNY},
       nazwa TEXT NOT NULL UNIQUE,
       email TEXT NOT NULL UNIQUE,
       haslo_hash TEXT NOT NULL,
-      data_rejestracji TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+      data_rejestracji ${TYP_DATY} NOT NULL DEFAULT CURRENT_TIMESTAMP
     )
   `);
 
   await uruchom(`
     CREATE TABLE IF NOT EXISTS kategorie (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      id ${KLUCZ_GLOWNY},
       nazwa TEXT NOT NULL UNIQUE,
       opis TEXT
     )
@@ -22,14 +26,14 @@ async function utworzTabele() {
 
   await uruchom(`
     CREATE TABLE IF NOT EXISTS ksiazki (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      id ${KLUCZ_GLOWNY},
       tytul TEXT NOT NULL,
       autor TEXT NOT NULL,
       opis TEXT NOT NULL,
       id_kategorii INTEGER NOT NULL,
       ocena REAL NOT NULL DEFAULT 0,
       okladka_url TEXT,
-      data_dodania TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      data_dodania ${TYP_DATY} NOT NULL DEFAULT CURRENT_TIMESTAMP,
       id_uzytkownika INTEGER NOT NULL,
       FOREIGN KEY (id_kategorii) REFERENCES kategorie(id),
       FOREIGN KEY (id_uzytkownika) REFERENCES uzytkownicy(id) ON DELETE CASCADE
@@ -38,12 +42,12 @@ async function utworzTabele() {
 
   await uruchom(`
     CREATE TABLE IF NOT EXISTS komentarze (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      id ${KLUCZ_GLOWNY},
       tresc TEXT NOT NULL,
       ocena INTEGER NOT NULL,
       id_uzytkownika INTEGER NOT NULL,
       id_ksiazki INTEGER NOT NULL,
-      data_dodania TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      data_dodania ${TYP_DATY} NOT NULL DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (id_uzytkownika) REFERENCES uzytkownicy(id) ON DELETE CASCADE,
       FOREIGN KEY (id_ksiazki) REFERENCES ksiazki(id) ON DELETE CASCADE
     )
@@ -52,9 +56,21 @@ async function utworzTabele() {
   await dopelnijKolumnyKsiazek();
 }
 
+async function pobierzNazwyKolumn(tabela) {
+  if (TRYB === "postgresql") {
+    const wiersze = await wszystkie(
+      "SELECT column_name AS name FROM information_schema.columns WHERE table_name = ?",
+      [tabela]
+    );
+    return new Set(wiersze.map((w) => w.name));
+  }
+
+  const wiersze = await wszystkie(`PRAGMA table_info(${tabela})`);
+  return new Set(wiersze.map((w) => w.name));
+}
+
 async function dopelnijKolumnyKsiazek() {
-  const kolumny = await wszystkie("PRAGMA table_info(ksiazki)");
-  const nazwy = new Set(kolumny.map((kolumna) => kolumna.name));
+  const nazwy = await pobierzNazwyKolumn("ksiazki");
 
   if (!nazwy.has("okladka_url")) {
     await uruchom("ALTER TABLE ksiazki ADD COLUMN okladka_url TEXT");
