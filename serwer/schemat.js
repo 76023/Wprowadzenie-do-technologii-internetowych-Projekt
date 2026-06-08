@@ -86,11 +86,12 @@ async function dodajKategorieStartowe() {
     ["Kryminał", "Zagadki, śledztwa i sensacja."]
   ];
 
+  const sql = TRYB === "postgresql"
+    ? "INSERT INTO kategorie (nazwa, opis) VALUES (?, ?) ON CONFLICT (nazwa) DO NOTHING"
+    : "INSERT OR IGNORE INTO kategorie (nazwa, opis) VALUES (?, ?)";
+
   for (const [nazwa, opis] of kategorie) {
-    await uruchom(
-      "INSERT OR IGNORE INTO kategorie (nazwa, opis) VALUES (?, ?)",
-      [nazwa, opis]
-    );
+    await uruchom(sql, [nazwa, opis]);
   }
 }
 
