@@ -1,6 +1,7 @@
 const path = require("path");
 const express = require("express");
 const { sciezkaBazy, wlaczBaze } = require("./baza");
+const { inicjalizujSchemat } = require("./schemat");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -35,6 +36,7 @@ app.use((req, res) => {
 
 async function start() {
   await wlaczBaze();
+  await inicjalizujSchemat();
 
   app.listen(PORT, () => {
     console.log(`ISACzytac dziala pod adresem http://localhost:${PORT}`);

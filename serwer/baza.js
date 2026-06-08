@@ -53,6 +53,19 @@ function wszystkie(sql, parametry = []) {
   });
 }
 
+function zamknijBaze() {
+  return new Promise((resolve, reject) => {
+    baza.close((blad) => {
+      if (blad) {
+        reject(blad);
+        return;
+      }
+
+      resolve();
+    });
+  });
+}
+
 async function wlaczBaze() {
   await uruchom("PRAGMA foreign_keys = ON");
 }
@@ -63,5 +76,6 @@ module.exports = {
   sciezkaBazy,
   uruchom,
   wlaczBaze,
-  wszystkie
+  wszystkie,
+  zamknijBaze
 };
