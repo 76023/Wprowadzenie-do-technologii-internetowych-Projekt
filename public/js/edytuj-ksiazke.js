@@ -67,6 +67,7 @@ async function zaladujDaneEdycji() {
     formularzEdycji.autor.value = ksiazka.autor;
     formularzEdycji.id_kategorii.value = ksiazka.id_kategorii;
     formularzEdycji.ocena.value = ksiazka.ocena;
+    formularzEdycji.okladka_url.value = ksiazka.okladka_url || "";
     formularzEdycji.opis.value = ksiazka.opis;
   } catch (blad) {
     pokazKomunikatEdycji(blad.message, "blad");
