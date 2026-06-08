@@ -8,24 +8,26 @@
   </head>
   <body>
     <div class="uklad">
-      <aside class="panel-nawigacji">
-        <a class="logo" href="/">ISACzytac</a>
-        <nav class="nawigacja-glowna">
-          <a href="/" data-sciezka="/">Główna</a>
-          <a href="/ksiazki" data-sciezka="/ksiazki">Książki</a>
-          <a href="/dodaj-ksiazke" data-sciezka="/dodaj-ksiazke">Dodaj książkę</a>
-          <a href="/moje-ksiazki" data-sciezka="/moje-ksiazki">Moje książki</a>
-          <a href="/logowanie" data-sciezka="/logowanie" data-tylko-gosc>Logowanie</a>
-          <a href="/rejestracja" data-sciezka="/rejestracja" data-tylko-gosc>Rejestracja</a>
-          <a href="/o-projekcie" data-sciezka="/o-projekcie">O projekcie</a>
-        </nav>
-        <div class="panel-uzytkownika" data-panel-uzytkownika></div>
-      </aside>
+      <header class="pasek-gorny">
+        <div class="pasek-gorny-srodek">
+          <a class="logo" href="/">ISACzytac</a>
+          <nav class="nawigacja-glowna">
+            <a href="/" data-sciezka="/">Strona główna</a>
+            <a href="/ksiazki" data-sciezka="/ksiazki">Katalog</a>
+            <a href="/dodaj-ksiazke" data-sciezka="/dodaj-ksiazke">Dodaj książkę</a>
+            <a href="/moje-ksiazki" data-sciezka="/moje-ksiazki">Moje książki</a>
+            <a href="/o-projekcie" data-sciezka="/o-projekcie">O projekcie</a>
+            <a href="/logowanie" data-sciezka="/logowanie" data-tylko-gosc>Logowanie</a>
+            <a href="/rejestracja" data-sciezka="/rejestracja" data-tylko-gosc>Rejestracja</a>
+          </nav>
+          <div class="panel-uzytkownika" data-panel-uzytkownika></div>
+        </div>
+      </header>
 
       <main class="kolumna-glowna">
         <header class="naglowek-strony">
-          <h1>Moje książki</h1>
-          <p>Pozycje dodane przez zalogowanego użytkownika.</p>
+          <h1>Moja biblioteczka</h1>
+          <p>Książki, które dodałeś jako zalogowany czytelnik.</p>
         </header>
 
         <div id="moje-ksiazki">
@@ -34,13 +36,17 @@
           </section>
         </div>
       </main>
+
+      <footer class="stopka-strony">
+        ISACzytac &copy; projekt semestralny. <a href="/o-projekcie">O projekcie</a>.
+      </footer>
     </div>
 
     <nav class="nawigacja-dolna">
-      <a href="/">Główna</a>
-      <a href="/ksiazki">Książki</a>
-      <a href="/dodaj-ksiazke">Dodaj</a>
-      <a href="/logowanie" data-konto-mobilne>Konto</a>
+      <a href="/" data-sciezka="/">Główna</a>
+      <a href="/ksiazki" data-sciezka="/ksiazki">Katalog</a>
+      <a href="/dodaj-ksiazke" data-sciezka="/dodaj-ksiazke">Dodaj</a>
+      <a href="/logowanie" data-konto-mobilne data-sciezka="/logowanie">Konto</a>
     </nav>
 
     <script src="/js/wspolne.js"></script>

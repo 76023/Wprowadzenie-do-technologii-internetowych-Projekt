@@ -8,41 +8,83 @@
   </head>
   <body>
     <div class="uklad">
-      <aside class="panel-nawigacji">
-        <a class="logo" href="/">ISACzytac</a>
-        <nav class="nawigacja-glowna">
-          <a href="/" data-sciezka="/">Główna</a>
-          <a href="/ksiazki" data-sciezka="/ksiazki">Książki</a>
-          <a href="/dodaj-ksiazke" data-sciezka="/dodaj-ksiazke">Dodaj książkę</a>
-          <a href="/moje-ksiazki" data-sciezka="/moje-ksiazki">Moje książki</a>
-          <a href="/logowanie" data-sciezka="/logowanie" data-tylko-gosc>Logowanie</a>
-          <a href="/rejestracja" data-sciezka="/rejestracja" data-tylko-gosc>Rejestracja</a>
-          <a href="/o-projekcie" data-sciezka="/o-projekcie">O projekcie</a>
-        </nav>
-        <div class="panel-uzytkownika" data-panel-uzytkownika></div>
-      </aside>
+      <header class="pasek-gorny">
+        <div class="pasek-gorny-srodek">
+          <a class="logo" href="/">ISACzytac</a>
+          <nav class="nawigacja-glowna">
+            <a href="/" data-sciezka="/">Strona główna</a>
+            <a href="/ksiazki" data-sciezka="/ksiazki">Katalog</a>
+            <a href="/dodaj-ksiazke" data-sciezka="/dodaj-ksiazke">Dodaj książkę</a>
+            <a href="/moje-ksiazki" data-sciezka="/moje-ksiazki">Moje książki</a>
+            <a href="/o-projekcie" data-sciezka="/o-projekcie">O projekcie</a>
+            <a href="/logowanie" data-sciezka="/logowanie" data-tylko-gosc>Logowanie</a>
+            <a href="/rejestracja" data-sciezka="/rejestracja" data-tylko-gosc>Rejestracja</a>
+          </nav>
+          <div class="panel-uzytkownika" data-panel-uzytkownika></div>
+        </div>
+      </header>
 
       <main class="kolumna-glowna">
-        <header class="naglowek-strony">
-          <h1>Strona główna</h1>
-          <p>Prosta aplikacja książkowa przygotowana jako projekt semestralny.</p>
-        </header>
-
-        <section class="karta">
-          <h2>Ostatnio dodane książki</h2>
-          <div id="ostatnie-ksiazki">
-            <p class="tekst-pomocniczy">Ładowanie książek...</p>
+        <section class="bohater-strony">
+          <h1>Witaj w ISACzytac</h1>
+          <p>Studencki portal o książkach. Przeglądaj katalog, dodawaj własne pozycje, oceniaj i czytaj opinie innych czytelników.</p>
+          <div class="akcje-bohatera">
+            <a class="przycisk" href="/ksiazki">Przejdź do katalogu</a>
+            <a class="przycisk-drugorzedny" href="/dodaj-ksiazke">Dodaj książkę</a>
           </div>
-          <a class="przycisk" href="/ksiazki">Przejdź do książek</a>
+        </section>
+
+        <section class="sekcja-portalu">
+          <div class="naglowek-sekcji">
+            <h2>Polecane</h2>
+            <a href="/ksiazki">Zobacz katalog</a>
+          </div>
+          <div class="siatka-okladek" id="ksiazki-polecane">
+            <p class="tekst-pomocniczy">Ładowanie polecanych...</p>
+          </div>
+        </section>
+
+        <section class="sekcja-portalu">
+          <div class="naglowek-sekcji">
+            <h2>Ostatnio dodane</h2>
+            <a href="/ksiazki">Wszystkie nowości</a>
+          </div>
+          <div class="siatka-okladek" id="ksiazki-ostatnie">
+            <p class="tekst-pomocniczy">Ładowanie nowości...</p>
+          </div>
+        </section>
+
+        <section class="sekcja-portalu">
+          <div class="naglowek-sekcji">
+            <h2>Najwyżej oceniane</h2>
+            <a href="/ksiazki">Pełny ranking</a>
+          </div>
+          <div class="siatka-okladek" id="ksiazki-najlepsze">
+            <p class="tekst-pomocniczy">Ładowanie najlepszych...</p>
+          </div>
+        </section>
+
+        <section class="sekcja-portalu">
+          <div class="naglowek-sekcji">
+            <h2>Kategorie</h2>
+            <a href="/ksiazki">Filtruj katalog</a>
+          </div>
+          <div class="siatka-kategorii" id="lista-kategorii">
+            <p class="tekst-pomocniczy">Ładowanie kategorii...</p>
+          </div>
         </section>
       </main>
+
+      <footer class="stopka-strony">
+        ISACzytac &copy; projekt semestralny z przedmiotu Wprowadzenie do technologii internetowych. <a href="/o-projekcie">O projekcie</a>.
+      </footer>
     </div>
 
     <nav class="nawigacja-dolna">
-      <a href="/">Główna</a>
-      <a href="/ksiazki">Książki</a>
-      <a href="/dodaj-ksiazke">Dodaj</a>
-      <a href="/logowanie" data-konto-mobilne>Konto</a>
+      <a href="/" data-sciezka="/">Główna</a>
+      <a href="/ksiazki" data-sciezka="/ksiazki">Katalog</a>
+      <a href="/dodaj-ksiazke" data-sciezka="/dodaj-ksiazke">Dodaj</a>
+      <a href="/logowanie" data-konto-mobilne data-sciezka="/logowanie">Konto</a>
     </nav>
 
     <script src="/js/wspolne.js"></script>
