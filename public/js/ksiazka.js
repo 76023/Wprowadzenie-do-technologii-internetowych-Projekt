@@ -45,6 +45,13 @@ function pokazKsiazke(ksiazka, uzytkownik) {
     : "";
 
   szczegolyKsiazki.innerHTML = `
+    <nav class="okruszki">
+      <a href="/">Strona główna</a>
+      <span>&rsaquo;</span>
+      <a href="/ksiazki">Katalog</a>
+      <span>&rsaquo;</span>
+      <span class="okruszek-aktualny">${ucieknijHtml(ksiazka.tytul)}</span>
+    </nav>
     <article class="karta karta-szczegolow hero-ksiazka">
       <div class="hero-okladka">
         ${htmlOkladki(ksiazka, "okladka okladka-duza")}
@@ -58,10 +65,11 @@ function pokazKsiazke(ksiazka, uzytkownik) {
           <span class="ocena-liczbowa">${Number(ksiazka.ocena).toFixed(1)} / 5</span>
         </div>
         <p class="opis-ksiazki">${ucieknijHtml(ksiazka.opis)}</p>
-        <div class="meta-wiersz">
-          <span>Dodał: ${ucieknijHtml(ksiazka.nazwa_uzytkownika)}</span>
-          <span>${formatujDateSzczegolow(ksiazka.data_dodania)}</span>
-        </div>
+        <dl class="lista-meta">
+          <div><dt>Dodał</dt><dd>${ucieknijHtml(ksiazka.nazwa_uzytkownika)}</dd></div>
+          <div><dt>Data dodania</dt><dd>${formatujDateSzczegolow(ksiazka.data_dodania)}</dd></div>
+          <div><dt>Kategoria</dt><dd>${ucieknijHtml(ksiazka.kategoria)}</dd></div>
+        </dl>
         ${akcjeAutora}
       </div>
     </article>

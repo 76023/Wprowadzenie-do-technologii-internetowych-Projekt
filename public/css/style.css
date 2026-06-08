@@ -649,8 +649,67 @@ a {
 .hero-ksiazka {
   display: grid;
   grid-template-columns: 240px minmax(0, 1fr);
-  gap: 28px;
+  gap: 30px;
   align-items: start;
+  background:
+    radial-gradient(120% 100% at 100% 0%, rgba(122, 31, 43, 0.05), transparent 60%),
+    var(--kolor-panelu);
+}
+
+.okruszki {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 22px 22px 0;
+  padding: 6px 12px;
+  color: var(--kolor-drugoplanowy);
+  font-size: 13px;
+}
+
+.okruszki a {
+  color: var(--kolor-akcentu);
+  font-weight: 600;
+}
+
+.okruszki a:hover {
+  text-decoration: underline;
+}
+
+.okruszek-aktualny {
+  color: var(--kolor-tekstu);
+  font-weight: 600;
+  max-width: 320px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lista-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin: 10px 0 0;
+}
+
+.lista-meta > div {
+  padding: 10px 12px;
+  border: 1px solid var(--kolor-ramki);
+  border-radius: 8px;
+  background: var(--kolor-tla-paska);
+}
+
+.lista-meta dt {
+  margin: 0;
+  color: var(--kolor-drugoplanowy);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.lista-meta dd {
+  margin: 4px 0 0;
+  font-weight: 600;
+  overflow-wrap: anywhere;
 }
 
 .hero-okladka {
