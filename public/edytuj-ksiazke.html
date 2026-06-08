@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ISACzytac - Edytuj książkę</title>
+    <link rel="stylesheet" href="/css/style.css">
+  </head>
+  <body>
+    <div class="uklad">
+      <aside class="panel-nawigacji">
+        <a class="logo" href="/">ISACzytac</a>
+        <nav class="nawigacja-glowna">
+          <a href="/" data-sciezka="/">Główna</a>
+          <a href="/ksiazki" data-sciezka="/ksiazki">Książki</a>
+          <a href="/dodaj-ksiazke" data-sciezka="/dodaj-ksiazke">Dodaj książkę</a>
+          <a href="/logowanie" data-sciezka="/logowanie">Logowanie</a>
+          <a href="/rejestracja" data-sciezka="/rejestracja">Rejestracja</a>
+          <a href="/o-projekcie" data-sciezka="/o-projekcie">O projekcie</a>
+        </nav>
+        <div class="panel-uzytkownika" data-panel-uzytkownika></div>
+      </aside>
+
+      <main class="kolumna-glowna">
+        <header class="naglowek-strony">
+          <h1>Edytuj książkę</h1>
+          <p>Zmiany może zapisać tylko użytkownik, który dodał książkę.</p>
+        </header>
+
+        <section class="karta">
+          <form class="formularz" id="formularz-edycji">
+            <label class="pole-formularza">
+              <span>Tytuł</span>
+              <input type="text" name="tytul" minlength="2" maxlength="120" required>
+            </label>
+
+            <label class="pole-formularza">
+              <span>Autor</span>
+              <input type="text" name="autor" minlength="2" maxlength="120" required>
+            </label>
+
+            <label class="pole-formularza">
+              <span>Kategoria</span>
+              <select name="id_kategorii" id="pole-kategorii" required>
+                <option value="">Ładowanie kategorii...</option>
+              </select>
+            </label>
+
+            <label class="pole-formularza">
+              <span>Ocena książki</span>
+              <input type="number" name="ocena" min="1" max="5" step="0.5" required>
+            </label>
+
+            <label class="pole-formularza">
+              <span>Opis</span>
+              <textarea name="opis" minlength="20" maxlength="2000" required></textarea>
+            </label>
+
+            <button class="przycisk" type="submit">Zapisz zmiany</button>
+          </form>
+
+          <div class="komunikat" id="komunikat-edycji" aria-live="polite"></div>
+        </section>
+      </main>
+    </div>
+
+    <nav class="nawigacja-dolna">
+      <a href="/">Główna</a>
+      <a href="/ksiazki">Książki</a>
+      <a href="/dodaj-ksiazke">Dodaj</a>
+    </nav>
+
+    <script src="/js/wspolne.js"></script>
+    <script src="/js/edytuj-ksiazke.js"></script>
+  </body>
+</html>

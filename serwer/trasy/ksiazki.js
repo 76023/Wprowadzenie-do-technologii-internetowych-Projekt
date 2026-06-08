@@ -39,6 +39,14 @@ function sprawdzKsiazke(dane) {
   return { bledy, tytul, autor, opis, idKategorii, ocena };
 }
 
+async function pobierzKsiazkePoId(id) {
+  return pobierz("SELECT id, id_uzytkownika FROM ksiazki WHERE id = ?", [id]);
+}
+
+function czyWlasciciel(req, ksiazka) {
+  return ksiazka.id_uzytkownika === req.session.uzytkownik.id;
+}
+
 router.get("/", async (req, res) => {
   try {
     const ksiazki = await wszystkie(`
@@ -96,6 +104,66 @@ router.post("/", wymagajLogowania, async (req, res) => {
   } catch (blad) {
     console.error("Blad dodawania ksiazki:", blad);
     res.status(500).json({ komunikat: "Nie udało się dodać książki." });
+  }
+});
+
+router.put("/:id", wymagajLogowania, async (req, res) => {
+  try {
+    const ksiazka = await pobierzKsiazkePoId(req.params.id);
+    if (!ksiazka) {
+      res.status(404).json({ komunikat: "Nie znaleziono książki." });
+      return;
+    }
+
+    if (!czyWlasciciel(req, ksiazka)) {
+      res.status(403).json({ komunikat: "Możesz edytować tylko własne książki." });
+      return;
+    }
+
+    const { bledy, tytul, autor, opis, idKategorii, ocena } = sprawdzKsiazke(req.body);
+    if (bledy.length) {
+      res.status(400).json({ komunikat: bledy.join(" ") });
+      return;
+    }
+
+    const kategoria = await pobierz("SELECT id FROM kategorie WHERE id = ?", [idKategorii]);
+    if (!kategoria) {
+      res.status(400).json({ komunikat: "Wybrana kategoria nie istnieje." });
+      return;
+    }
+
+    await uruchom(
+      `UPDATE ksiazki
+       SET tytul = ?, autor = ?, opis = ?, id_kategorii = ?, ocena = ?
+       WHERE id = ?`,
+      [tytul, autor, opis, idKategorii, ocena, req.params.id]
+    );
+
+    res.json({ komunikat: "Książka została zaktualizowana." });
+  } catch (blad) {
+    console.error("Blad edycji ksiazki:", blad);
+    res.status(500).json({ komunikat: "Nie udało się zaktualizować książki." });
+  }
+});
+
+router.delete("/:id", wymagajLogowania, async (req, res) => {
+  try {
+    const ksiazka = await pobierzKsiazkePoId(req.params.id);
+    if (!ksiazka) {
+      res.status(404).json({ komunikat: "Nie znaleziono książki." });
+      return;
+    }
+
+    if (!czyWlasciciel(req, ksiazka)) {
+      res.status(403).json({ komunikat: "Możesz usunąć tylko własne książki." });
+      return;
+    }
+
+    await uruchom("DELETE FROM ksiazki WHERE id = ?", [req.params.id]);
+    res.json({ komunikat: "Książka została usunięta." });
+  } catch (blad) {
+    console.error("Blad usuwania ksiazki:", blad);
+    res.status(500).json({ komunikat: "Nie udało się usunąć książki." });
   }
 });
 
