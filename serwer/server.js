@@ -2,6 +2,8 @@ const path = require("path");
 const express = require("express");
 const { sciezkaBazy, wlaczBaze } = require("./baza");
 const { inicjalizujSchemat } = require("./schemat");
+const trasyKategorii = require("./trasy/kategorie");
+const trasyKsiazek = require("./trasy/ksiazki");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -29,6 +31,9 @@ app.get("/api/status", (req, res) => {
     status: "dziala"
   });
 });
+
+app.use("/api/kategorie", trasyKategorii);
+app.use("/api/ksiazki", trasyKsiazek);
 
 app.use((req, res) => {
   res.status(404).sendFile(path.join(katalogPubliczny, "404.html"));

@@ -102,6 +102,49 @@ a {
   border-bottom: 1px solid var(--kolor-ramki);
 }
 
+.karta-ksiazki h2 {
+  font-size: 22px;
+}
+
+.karta-ksiazki h2 a:hover,
+.wiersz-link:hover strong {
+  color: var(--kolor-akcentu-ciemny);
+}
+
+.autor {
+  margin-top: -4px;
+  color: var(--kolor-drugoplanowy);
+}
+
+.meta-wiersz {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin-top: 12px;
+  color: var(--kolor-drugoplanowy);
+  font-size: 14px;
+}
+
+.meta-wiersz:first-child {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.wiersz-link {
+  display: grid;
+  gap: 2px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--kolor-ramki);
+}
+
+.wiersz-link:last-child {
+  border-bottom: 0;
+}
+
+.wiersz-link span {
+  color: var(--kolor-drugoplanowy);
+}
+
 .przycisk {
   display: inline-flex;
   align-items: center;

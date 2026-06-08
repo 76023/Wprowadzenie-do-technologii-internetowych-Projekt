@@ -20,13 +20,14 @@
       <main class="kolumna-glowna">
         <header class="naglowek-strony">
           <h1>Lista książek</h1>
-          <p>W tym miejscu pojawią się książki z lokalnej bazy SQLite.</p>
+          <p>Książki dodane przez użytkowników aplikacji.</p>
         </header>
 
-        <section class="karta">
-          <h2>Brak danych</h2>
-          <p class="tekst-pomocniczy">Baza danych zostanie dodana w następnym kroku.</p>
-        </section>
+        <div id="lista-ksiazek">
+          <section class="karta">
+            <p class="tekst-pomocniczy">Ładowanie książek...</p>
+          </section>
+        </div>
       </main>
     </div>
 
@@ -37,5 +38,6 @@
     </nav>
 
     <script src="/js/wspolne.js"></script>
+    <script src="/js/ksiazki.js"></script>
   </body>
 </html>
