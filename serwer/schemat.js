@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const { pobierz, uruchom } = require("./baza");
+const { pobierz, uruchom, wszystkie } = require("./baza");
 
 async function utworzTabele() {
   await uruchom(`
@@ -28,6 +28,7 @@ async function utworzTabele() {
       opis TEXT NOT NULL,
       id_kategorii INTEGER NOT NULL,
       ocena REAL NOT NULL DEFAULT 0,
+      okladka_url TEXT,
       data_dodania TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
       id_uzytkownika INTEGER NOT NULL,
       FOREIGN KEY (id_kategorii) REFERENCES kategorie(id),
@@ -47,6 +48,17 @@ async function utworzTabele() {
       FOREIGN KEY (id_ksiazki) REFERENCES ksiazki(id) ON DELETE CASCADE
     )
   `);
+
+  await dopelnijKolumnyKsiazek();
+}
+
+async function dopelnijKolumnyKsiazek() {
+  const kolumny = await wszystkie("PRAGMA table_info(ksiazki)");
+  const nazwy = new Set(kolumny.map((kolumna) => kolumna.name));
+
+  if (!nazwy.has("okladka_url")) {
+    await uruchom("ALTER TABLE ksiazki ADD COLUMN okladka_url TEXT");
+  }
 }
 
 async function dodajKategorieStartowe() {
@@ -101,14 +113,15 @@ async function dodajKsiazkeStartowa(ksiazka, idUzytkownika) {
   const kategoria = await pobierzKategoriePoNazwie(ksiazka.kategoria);
   const wynik = await uruchom(
     `INSERT INTO ksiazki
-      (tytul, autor, opis, id_kategorii, ocena, id_uzytkownika)
-      VALUES (?, ?, ?, ?, ?, ?)`,
+      (tytul, autor, opis, id_kategorii, ocena, okladka_url, id_uzytkownika)
+      VALUES (?, ?, ?, ?, ?, ?, ?)`,
     [
       ksiazka.tytul,
       ksiazka.autor,
       ksiazka.opis,
       kategoria.id,
       ksiazka.ocena,
+      ksiazka.okladka_url || null,
       idUzytkownika
     ]
   );

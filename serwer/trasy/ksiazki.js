@@ -8,12 +8,34 @@ function czyscTekst(wartosc) {
   return String(wartosc || "").trim();
 }
 
+function sprawdzAdresOkladki(wartosc) {
+  if (!wartosc) {
+    return "";
+  }
+
+  if (wartosc.length > 500) {
+    return null;
+  }
+
+  try {
+    const adres = new URL(wartosc);
+    if (adres.protocol !== "http:" && adres.protocol !== "https:") {
+      return null;
+    }
+    return adres.toString();
+  } catch (blad) {
+    return null;
+  }
+}
+
 function sprawdzKsiazke(dane) {
   const tytul = czyscTekst(dane.tytul);
   const autor = czyscTekst(dane.autor);
   const opis = czyscTekst(dane.opis);
   const idKategorii = Number(dane.id_kategorii);
   const ocena = Number(dane.ocena);
+  const adresOkladki = czyscTekst(dane.okladka_url);
+  const okladkaUrl = sprawdzAdresOkladki(adresOkladki);
   const bledy = [];
 
   if (tytul.length < 2 || tytul.length > 120) {
@@ -36,7 +58,11 @@ function sprawdzKsiazke(dane) {
     bledy.push("Ocena musi być liczbą od 1 do 5.");
   }
 
-  return { bledy, tytul, autor, opis, idKategorii, ocena };
+  if (okladkaUrl === null) {
+    bledy.push("Adres okładki musi być poprawnym linkiem http lub https (do 500 znaków).");
+  }
+
+  return { bledy, tytul, autor, opis, idKategorii, ocena, okladkaUrl: okladkaUrl || null };
 }
 
 function sprawdzKomentarz(dane) {
@@ -89,6 +115,7 @@ router.get("/", async (req, res) => {
         ksiazki.autor,
         ksiazki.opis,
         ksiazki.ocena,
+        ksiazki.okladka_url,
         ksiazki.data_dodania,
         kategorie.nazwa AS kategoria,
         uzytkownicy.nazwa AS nazwa_uzytkownika,
@@ -111,7 +138,7 @@ router.get("/", async (req, res) => {
 
 router.post("/", wymagajLogowania, async (req, res) => {
   try {
-    const { bledy, tytul, autor, opis, idKategorii, ocena } = sprawdzKsiazke(req.body);
+    const { bledy, tytul, autor, opis, idKategorii, ocena, okladkaUrl } = sprawdzKsiazke(req.body);
 
     if (bledy.length) {
       res.status(400).json({ komunikat: bledy.join(" ") });
@@ -126,9 +153,9 @@ router.post("/", wymagajLogowania, async (req, res) => {
 
     const wynik = await uruchom(
       `INSERT INTO ksiazki
-        (tytul, autor, opis, id_kategorii, ocena, id_uzytkownika)
-        VALUES (?, ?, ?, ?, ?, ?)`,
-      [tytul, autor, opis, idKategorii, ocena, req.session.uzytkownik.id]
+        (tytul, autor, opis, id_kategorii, ocena, okladka_url, id_uzytkownika)
+        VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [tytul, autor, opis, idKategorii, ocena, okladkaUrl, req.session.uzytkownik.id]
     );
 
     res.status(201).json({
@@ -151,6 +178,7 @@ router.get("/moje", wymagajLogowania, async (req, res) => {
           ksiazki.autor,
           ksiazki.opis,
           ksiazki.ocena,
+          ksiazki.okladka_url,
           ksiazki.data_dodania,
           kategorie.nazwa AS kategoria
         FROM ksiazki
@@ -181,7 +209,7 @@ router.put("/:id", wymagajLogowania, async (req, res) => {
       return;
     }
 
-    const { bledy, tytul, autor, opis, idKategorii, ocena } = sprawdzKsiazke(req.body);
+    const { bledy, tytul, autor, opis, idKategorii, ocena, okladkaUrl } = sprawdzKsiazke(req.body);
     if (bledy.length) {
       res.status(400).json({ komunikat: bledy.join(" ") });
       return;
@@ -195,9 +223,9 @@ router.put("/:id", wymagajLogowania, async (req, res) => {
 
     await uruchom(
       `UPDATE ksiazki
-       SET tytul = ?, autor = ?, opis = ?, id_kategorii = ?, ocena = ?
+       SET tytul = ?, autor = ?, opis = ?, id_kategorii = ?, ocena = ?, okladka_url = ?
        WHERE id = ?`,
-      [tytul, autor, opis, idKategorii, ocena, req.params.id]
+      [tytul, autor, opis, idKategorii, ocena, okladkaUrl, req.params.id]
     );
 
     res.json({ komunikat: "Książka została zaktualizowana." });
@@ -300,6 +328,7 @@ router.get("/:id", async (req, res) => {
           ksiazki.autor,
           ksiazki.opis,
           ksiazki.ocena,
+          ksiazki.okladka_url,
           ksiazki.data_dodania,
           ksiazki.id_uzytkownika,
           kategorie.id AS id_kategorii,
