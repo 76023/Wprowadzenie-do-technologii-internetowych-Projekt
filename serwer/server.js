@@ -3,6 +3,7 @@ const express = require("express");
 const { sciezkaBazy, wlaczBaze } = require("./baza");
 const { inicjalizujSchemat } = require("./schemat");
 const { konfigurujSesje } = require("./sesja");
+const { opisTrybu, czyTrybProdukcyjny } = require("./tryb-bazy");
 const trasyAuth = require("./trasy/auth");
 const trasyKategorii = require("./trasy/kategorie");
 const trasyKomentarzy = require("./trasy/komentarze");
@@ -54,6 +55,9 @@ app.use((req, res) => {
 async function start() {
   await wlaczBaze();
   await inicjalizujSchemat();
+
+  const srodowisko = czyTrybProdukcyjny() ? "produkcja" : "lokalnie";
+  console.log(`Tryb bazy: ${opisTrybu()} | Srodowisko: ${srodowisko}`);
 
   app.listen(PORT, () => {
     console.log(`ISACzytac dziala pod adresem http://localhost:${PORT}`);
