@@ -22,6 +22,7 @@ function wyslijStrone(nazwaPliku) {
 
 app.get("/", wyslijStrone("index.html"));
 app.get("/ksiazki", wyslijStrone("ksiazki.html"));
+app.get("/ksiazka", wyslijStrone("ksiazka.html"));
 app.get("/o-projekcie", wyslijStrone("o-projekcie.html"));
 
 app.get("/api/status", (req, res) => {

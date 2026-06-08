@@ -1,5 +1,5 @@
 const express = require("express");
-const { wszystkie } = require("../baza");
+const { pobierz, wszystkie } = require("../baza");
 
 const router = express.Router();
 
@@ -28,6 +28,41 @@ router.get("/", async (req, res) => {
   } catch (blad) {
     console.error("Blad pobierania ksiazek:", blad);
     res.status(500).json({ komunikat: "Nie udało się pobrać listy książek." });
+  }
+});
+
+router.get("/:id", async (req, res) => {
+  try {
+    const ksiazka = await pobierz(
+      `
+        SELECT
+          ksiazki.id,
+          ksiazki.tytul,
+          ksiazki.autor,
+          ksiazki.opis,
+          ksiazki.ocena,
+          ksiazki.data_dodania,
+          ksiazki.id_uzytkownika,
+          kategorie.id AS id_kategorii,
+          kategorie.nazwa AS kategoria,
+          uzytkownicy.nazwa AS nazwa_uzytkownika
+        FROM ksiazki
+        JOIN kategorie ON kategorie.id = ksiazki.id_kategorii
+        JOIN uzytkownicy ON uzytkownicy.id = ksiazki.id_uzytkownika
+        WHERE ksiazki.id = ?
+      `,
+      [req.params.id]
+    );
+
+    if (!ksiazka) {
+      res.status(404).json({ komunikat: "Nie znaleziono książki." });
+      return;
+    }
+
+    res.json({ ksiazka });
+  } catch (blad) {
+    console.error("Blad pobierania szczegolow ksiazki:", blad);
+    res.status(500).json({ komunikat: "Nie udało się pobrać szczegółów książki." });
   }
 });
 
