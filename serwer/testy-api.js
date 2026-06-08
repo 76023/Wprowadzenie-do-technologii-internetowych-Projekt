@@ -31,6 +31,14 @@ async function pobierzJson(sciezka, opcje = {}) {
   return { odpowiedz, dane };
 }
 
+async function sprawdzStrone(sciezka, podpis) {
+  const odpowiedz = await fetch(`${adres}${sciezka}`);
+  const html = await odpowiedz.text();
+
+  sprawdz(odpowiedz.ok, `${podpis} nie odpowiada.`);
+  sprawdz(html.includes("ISACzytac"), `${podpis} nie zawiera nazwy aplikacji.`);
+}
+
 function sprawdz(warunek, komunikat) {
   if (!warunek) {
     throw new Error(komunikat);
@@ -71,8 +79,21 @@ async function wykonajTesty() {
   try {
     await czekajNaSerwer();
 
-    const stronaGlowna = await fetch(`${adres}/`);
-    sprawdz(stronaGlowna.ok, "Strona główna nie odpowiada.");
+    const strony = [
+      ["/", "Strona główna"],
+      ["/ksiazki", "Lista książek"],
+      ["/ksiazka?id=1", "Szczegóły książki"],
+      ["/dodaj-ksiazke", "Dodawanie książki"],
+      ["/edytuj-ksiazke?id=1", "Edycja książki"],
+      ["/logowanie", "Logowanie"],
+      ["/rejestracja", "Rejestracja"],
+      ["/moje-ksiazki", "Moje książki"],
+      ["/o-projekcie", "O projekcie"]
+    ];
+
+    for (const [sciezka, podpis] of strony) {
+      await sprawdzStrone(sciezka, podpis);
+    }
 
     const lista = await pobierzJson("/api/ksiazki");
     sprawdz(lista.odpowiedz.ok, "Lista książek nie odpowiada.");
