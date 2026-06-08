@@ -29,6 +29,7 @@ app.get("/ksiazki", wyslijStrone("ksiazki.html"));
 app.get("/ksiazka", wyslijStrone("ksiazka.html"));
 app.get("/dodaj-ksiazke", wyslijStrone("dodaj-ksiazke.html"));
 app.get("/edytuj-ksiazke", wyslijStrone("edytuj-ksiazke.html"));
+app.get("/moje-ksiazki", wyslijStrone("moje-ksiazki.html"));
 app.get("/logowanie", wyslijStrone("logowanie.html"));
 app.get("/rejestracja", wyslijStrone("rejestracja.html"));
 app.get("/o-projekcie", wyslijStrone("o-projekcie.html"));

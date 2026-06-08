@@ -141,6 +141,33 @@ router.post("/", wymagajLogowania, async (req, res) => {
   }
 });
 
+router.get("/moje", wymagajLogowania, async (req, res) => {
+  try {
+    const ksiazki = await wszystkie(
+      `
+        SELECT
+          ksiazki.id,
+          ksiazki.tytul,
+          ksiazki.autor,
+          ksiazki.opis,
+          ksiazki.ocena,
+          ksiazki.data_dodania,
+          kategorie.nazwa AS kategoria
+        FROM ksiazki
+        JOIN kategorie ON kategorie.id = ksiazki.id_kategorii
+        WHERE ksiazki.id_uzytkownika = ?
+        ORDER BY datetime(ksiazki.data_dodania) DESC
+      `,
+      [req.session.uzytkownik.id]
+    );
+
+    res.json({ ksiazki });
+  } catch (blad) {
+    console.error("Blad pobierania moich ksiazek:", blad);
+    res.status(500).json({ komunikat: "Nie udało się pobrać Twoich książek." });
+  }
+});
+
 router.put("/:id", wymagajLogowania, async (req, res) => {
   try {
     const ksiazka = await pobierzKsiazkePoId(req.params.id);

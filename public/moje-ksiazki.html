@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ISACzytac - Logowanie</title>
+    <title>ISACzytac - Moje książki</title>
     <link rel="stylesheet" href="/css/style.css">
   </head>
   <body>
@@ -24,31 +24,15 @@
 
       <main class="kolumna-glowna">
         <header class="naglowek-strony">
-          <h1>Logowanie</h1>
-          <p>Zaloguj się, aby dodawać książki i komentować.</p>
+          <h1>Moje książki</h1>
+          <p>Pozycje dodane przez zalogowanego użytkownika.</p>
         </header>
 
-        <section class="karta">
-          <form class="formularz" id="formularz-logowania">
-            <label class="pole-formularza">
-              <span>Email</span>
-              <input type="email" name="email" autocomplete="email" required>
-            </label>
-
-            <label class="pole-formularza">
-              <span>Hasło</span>
-              <input type="password" name="haslo" autocomplete="current-password" required>
-            </label>
-
-            <button class="przycisk" type="submit">Zaloguj</button>
-          </form>
-
-          <p class="tekst-pomocniczy odstep-gorny">
-            Nie masz konta? <a class="link-akcent" href="/rejestracja">Przejdź do rejestracji</a>.
-          </p>
-
-          <div class="komunikat" id="komunikat-logowania" aria-live="polite"></div>
-        </section>
+        <div id="moje-ksiazki">
+          <section class="karta">
+            <p class="tekst-pomocniczy">Ładowanie książek...</p>
+          </section>
+        </div>
       </main>
     </div>
 
@@ -59,6 +43,6 @@
     </nav>
 
     <script src="/js/wspolne.js"></script>
-    <script src="/js/logowanie.js"></script>
+    <script src="/js/moje-ksiazki.js"></script>
   </body>
 </html>
