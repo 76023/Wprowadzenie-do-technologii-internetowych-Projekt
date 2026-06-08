@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ISACzytac - Rejestracja</title>
+    <title>ISACzytac - Logowanie</title>
     <link rel="stylesheet" href="/css/style.css">
   </head>
   <body>
@@ -22,35 +22,30 @@
 
       <main class="kolumna-glowna">
         <header class="naglowek-strony">
-          <h1>Rejestracja</h1>
-          <p>Utwórz konto, aby dodawać książki i komentarze.</p>
+          <h1>Logowanie</h1>
+          <p>Zaloguj się, aby dodawać książki i komentować.</p>
         </header>
 
         <section class="karta">
-          <form class="formularz" id="formularz-rejestracji">
-            <label class="pole-formularza">
-              <span>Nazwa użytkownika</span>
-              <input type="text" name="nazwa" minlength="3" maxlength="30" required>
-            </label>
-
+          <form class="formularz" id="formularz-logowania">
             <label class="pole-formularza">
               <span>Email</span>
-              <input type="email" name="email" required>
+              <input type="email" name="email" autocomplete="email" required>
             </label>
 
             <label class="pole-formularza">
               <span>Hasło</span>
-              <input type="password" name="haslo" minlength="6" required>
+              <input type="password" name="haslo" autocomplete="current-password" required>
             </label>
 
-            <button class="przycisk" type="submit">Utwórz konto</button>
+            <button class="przycisk" type="submit">Zaloguj</button>
           </form>
 
           <p class="tekst-pomocniczy odstep-gorny">
-            Masz już konto? <a class="link-akcent" href="/logowanie">Przejdź do logowania</a>.
+            Nie masz konta? <a class="link-akcent" href="/rejestracja">Przejdź do rejestracji</a>.
           </p>
 
-          <div class="komunikat" id="komunikat-rejestracji" aria-live="polite"></div>
+          <div class="komunikat" id="komunikat-logowania" aria-live="polite"></div>
         </section>
       </main>
     </div>
@@ -62,6 +57,6 @@
     </nav>
 
     <script src="/js/wspolne.js"></script>
-    <script src="/js/rejestracja.js"></script>
+    <script src="/js/logowanie.js"></script>
   </body>
 </html>

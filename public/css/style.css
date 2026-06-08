@@ -69,6 +69,14 @@ a {
   color: var(--kolor-akcentu-ciemny);
 }
 
+.panel-uzytkownika {
+  display: grid;
+  gap: 8px;
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 1px solid var(--kolor-ramki);
+}
+
 .kolumna-glowna {
   min-height: 100vh;
   border-right: 1px solid var(--kolor-ramki);
@@ -166,6 +174,26 @@ a {
 
 .przycisk:hover {
   background: var(--kolor-akcentu-ciemny);
+}
+
+.przycisk-drugorzedny {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1px solid var(--kolor-ramki);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--kolor-tekstu);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.przycisk-drugorzedny:hover {
+  border-color: var(--kolor-akcentu);
+  color: var(--kolor-akcentu-ciemny);
 }
 
 .formularz {
