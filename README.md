@@ -105,6 +105,33 @@ Przy pierwszym uruchomieniu aplikacja tworzy bazę SQLite i dodaje przykładowe 
 - email: `demo@isaczytac.local`
 - hasło: `demo1234`
 
+## Reset lokalnej bazy do widoku demo
+
+Jeśli lokalna baza zawiera stare dane testowe (np. konta lub książki dodane podczas pracy z kodem) i chcesz zobaczyć czysty stan z 18 książkami demo, zatrzymaj serwer i usuń plik bazy:
+
+PowerShell:
+
+```powershell
+Remove-Item baza\isaczytac.sqlite, baza\isaczytac.sqlite-journal -Force -ErrorAction SilentlyContinue
+```
+
+Git Bash / Linux / macOS:
+
+```bash
+rm -f baza/isaczytac.sqlite baza/isaczytac.sqlite-journal
+```
+
+Pliki `*.sqlite` są w `.gitignore`, więc operacja dotyczy tylko Twojej kopii. Po następnym `npm start` aplikacja utworzy świeżą bazę z 18 książkami i lokalnymi okładkami SVG. Plik sesji `baza/sesje.sqlite` możesz zachować lub usunąć - usunięcie wyloguje wszystkich zalogowanych użytkowników.
+
+## Okładki książek
+
+Każda zaseedowana książka korzysta z lokalnego SVG w katalogu `public/img/okladki/`. Pole `okladka_url` w bazie akceptuje:
+
+- pełne adresy `http://` lub `https://`,
+- ścieżki lokalne zaczynające się od `/img/` (np. własne okładki w `public/img/okladki/`).
+
+Niepoprawne wartości (`javascript:`, `data:`, ścieżki spoza `/img/`, traversal `..`) są odrzucane. Jeśli pole pozostanie puste, frontend pokaże domyślny `public/img/brak-okladki.svg`.
+
 ## Zmienne środowiskowe
 
 Przykład znajduje się w pliku `.env.example`.
