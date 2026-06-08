@@ -1,0 +1,29 @@
+{
+  "name": "isaczytac",
+  "version": "1.0.0",
+  "description": "ISACzytac - projekt semestralny z przedmiotu Wprowadzenie do technologii internetowych.",
+  "main": "serwer/server.js",
+  "scripts": {
+    "start": "node serwer/server.js",
+    "dev": "nodemon serwer/server.js",
+    "test": "node serwer/testy-api.js"
+  },
+  "keywords": [
+    "express",
+    "sqlite",
+    "ksiazki",
+    "projekt"
+  ],
+  "author": "76023",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "connect-sqlite3": "^0.9.16",
+    "express": "^5.1.0",
+    "express-session": "^1.18.1",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
